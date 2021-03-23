@@ -15,7 +15,7 @@ def show_annotations(sample):
         sample(AnnotatedDataset.__get__ output)
     """
     image = sample['image']
-    ann = sample['annotations']
+    ann = sample['annotations'][0]
     fig = plt.figure()
     ax = fig.add_subplot(111)
     plt.imshow(image)
@@ -26,14 +26,14 @@ def show_annotations(sample):
 
 
 def toTensor(sample):
-    image, landmarks = sample['image'], sample['landmarks']
+    image, annotations = sample['image'], sample['annotations']
 
     # swap color axis because
     # numpy image: H x W x C
     # torch image: C X H X W
     image = image.transpose((2, 0, 1))
     return {'image': torch.from_numpy(image),
-            'landmarks': torch.from_numpy(landmarks)}
+            'annotations': torch.from_numpy(annotations)}
 
 
 class AnnotatedDataset(Dataset):
@@ -82,7 +82,7 @@ class Rescale(object):
         self.output_size = output_size
 
     def __call__(self, sample):
-        image, landmarks = sample['image'], sample['landmarks']
+        image, annotations = sample['image'], sample['annotations']
 
         h, w = image.shape[:2]
         if isinstance(self.output_size, int):
@@ -99,9 +99,9 @@ class Rescale(object):
 
         # h and w are swapped for landmarks because for images,
         # x and y axes are axis 1 and 0 respectively
-        landmarks = landmarks * [new_w / w, new_h / h]
+        annotations = annotations * [new_w / w, new_h / h]
 
-        return {'image': img, 'landmarks': landmarks}
+        return {'image': img, 'annotations': annotations}
 
 if __name__ == '__main__':
     MASK_DS = AnnotatedDataset('dataset/mask_df_merged.csv', 'dataset')
