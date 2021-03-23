@@ -1,4 +1,4 @@
-import pandas as pd
+### import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.patches as pat
@@ -19,7 +19,7 @@ def show_annotations(sample):
     fig = plt.figure()
     ax = fig.add_subplot(111)
     plt.imshow(image)
-    rect = pat.Rectangle((ann[0], ann[1]), ann[2], ann[3], fill = 0, color='g')
+    rect = pat.Rectangle((ann[0], ann[1]), ann[3], ann[2], fill = 0, color='g')
     plt.scatter(ann[4], ann[5])
     plt.scatter(ann[6], ann[7])
     ax.add_patch(rect)
@@ -60,7 +60,9 @@ class AnnotatedDataset(Dataset):
         img_name = os.path.join(self.root_dir, self.annotations.iloc[idx, 0])
         image = io.imread(img_name)
         anno = self.annotations.iloc[idx, 2:] # name, class , ....
+        print(anno)
         anno = np.array([anno]).astype('float').reshape(-1, 8)
+        print(anno)
         sample = {'image': image, 'annotations': anno}
         
         if self.transform:
@@ -97,18 +99,33 @@ class Rescale(object):
 
         img = transform.resize(image, (new_h, new_w))
 
-        # h and w are swapped for landmarks because for images,
-        # x and y axes are axis 1 and 0 respectively
-        annotations = annotations * [new_w / w, new_h / h]
-
-        return {'image': img, 'annotations': annotations}
+        # by default it's [annotations]
+        annotations = annotations[0]
+        annotations = [
+            #bbox_x
+            annotations[0] * new_w / w,
+            #bbox_y
+            annotations[1] * new_h / h,
+            #bbox_width (seems like height)
+            annotations[2] * new_h / h,
+            #bbox_heigth (seems like width)
+            annotations[3] * new_w / w,
+            #kp1_x
+            annotations[4] * new_w / w,
+            #kp1_y
+            annotations[5] * new_h / h,
+            #kp2_x
+            annotations[6] * new_w / w,
+            #kp2_y
+            annotations[7] * new_h / h
+        ]
+        return {'image': img, 'annotations': np.array([annotations]).astype('float').reshape(-1, 8)}
 
 if __name__ == '__main__':
     MASK_DS = AnnotatedDataset('dataset/mask_df_merged.csv', 'dataset')
     print(len(MASK_DS))
-    show_annotations(MASK_DS[0])
+    show_annotations(MASK_DS[324])
     x = toTensor(MASK_DS[0])
     scaler = Rescale((400, 400))
-    scaled = scaler(MASK_DS[0])
-    scaled = toTensor(scaled)
+    scaled = scaler(MASK_DS[324])
     show_annotations(scaled)
