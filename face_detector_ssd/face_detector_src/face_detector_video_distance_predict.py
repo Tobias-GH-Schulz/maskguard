@@ -5,16 +5,23 @@ import argparse
 import imutils
 import time
 import cv2
+import torch
+
 
 #defining prototext and caffemodel paths
 caffeModel = "/Users/tobiasschulz/Documents/GitHub/mask-detector/face_detector_ssd/face_detector_model/res10_300x300_ssd_iter_140000.caffemodel"
 prototextPath = "/Users/tobiasschulz/Documents/GitHub/mask-detector/face_detector_ssd/face_detector_model/deploy.prototxt"
+
+mask_classifier = torch.load("/Users/tobiasschulz/Documents/GitHub/mask-detector/mnv2_mask_classifier.pth")
+mask_classifier.eval()
 
 #Load Model
 print("Loading model...................")
 net = cv2.dnn.readNetFromCaffe(prototextPath,caffeModel)
 
 frame_no = 0
+
+
 
 # initialize the video stream to get the live video frames
 print("[INFO] starting video stream...")
@@ -60,7 +67,12 @@ while(video.isOpened()):
             box = detections[0, 0, i, 3:7] * np.array([w, h, w, h])
             (startX, startY, endX, endY) = box.astype("int")
 
+            # crop the face from the frame
             face = frame[startY:endY, startX:endX]
+
+            # predict if person wears mask or not
+            #predictions = mask_classifier.forward(face)
+            #print(predictions.numpy().argmax())
 
             # draw the bounding box of the face along with the associated
             text = "{:.2f}%".format(confidence * 100)

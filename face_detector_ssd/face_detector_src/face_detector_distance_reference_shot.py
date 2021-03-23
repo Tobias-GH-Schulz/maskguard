@@ -44,9 +44,6 @@ while(video.isOpened()):
             pos_dict = dict()
             coordinates = dict()
 
-            # Focal length
-            F = 615
-
             for i in range(0, detections.shape[2]):
                 # extract the confidence and prediction
 
