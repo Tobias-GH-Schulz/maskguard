@@ -1,5 +1,6 @@
 ### import pandas as pd
 import numpy as np
+import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.patches as pat
 import torch
@@ -68,6 +69,21 @@ class AnnotatedDataset(Dataset):
         
         return sample
 
+    def crop_out(self, idx, inPlace = False):
+        if isinstance(idx, torch.Tensor):
+            idx = idx.tolist()
+        
+        img_name = os.path.join(self.root_dir, self.annotations.iloc[idx, 0])
+        image = io.imread(img_name)
+        anno = self.annotations.iloc[idx, 2:] # name, class , ....
+        anno = np.array([anno]).astype('int').reshape(-1, 8)[0]
+        image = image[anno[1]:anno[1]+anno[2], anno[0]:anno[0]+anno[3]]
+        if inPlace:
+            io.imsave(img_name, image)
+        else:
+            return image
+        
+
 class Rescale(object):
     """Rescale the image in a sample to a given size.
 
@@ -127,3 +143,5 @@ if __name__ == '__main__':
     scaler = Rescale((400, 400))
     scaled = scaler(MASK_DS[324])
     show_annotations(scaled)
+    plt.figure()
+    io.imshow(MASK_DS.crop_out(0))
