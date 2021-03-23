@@ -60,9 +60,7 @@ class AnnotatedDataset(Dataset):
         img_name = os.path.join(self.root_dir, self.annotations.iloc[idx, 0])
         image = io.imread(img_name)
         anno = self.annotations.iloc[idx, 2:] # name, class , ....
-        print(anno)
         anno = np.array([anno]).astype('float').reshape(-1, 8)
-        print(anno)
         sample = {'image': image, 'annotations': anno}
         
         if self.transform:
