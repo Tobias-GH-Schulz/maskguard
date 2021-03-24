@@ -29,9 +29,9 @@ while(video.isOpened()):
         # get the faces
 
         # annotations
-        frame = annotate_heads(frame, confidence, face_boxes)
+        frame = annotate_heads(frame, face_boxes, confidence)
         frame = annotate_distance(frame, face_boxes, pos_dict, close_objects)
-        
+        frame = annotate_gender(frame, face_boxes, gender)
 
         # show the output frame
         cv2.imshow("Frame", frame)
