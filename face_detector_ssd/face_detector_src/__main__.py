@@ -4,7 +4,8 @@ import imutils
 import time
 from imutils.video import VideoStream
 from face_detector import face_detector
-
+from distance_measurement import get_distance
+from annotations import *
 
 frame_no = 0
 
@@ -22,19 +23,10 @@ while(video.isOpened()):
         frame = imutils.resize(frame,width=400)
 
         coordinates, confidence = face_detector(frame)
+        pos_dict, close_objects = get_distance(coordinates)
+        frame = annotate_heads(frame, confidence, coordinates)
+        frame = annotate_distance(frame, coordinates, pos_dict, close_objects)
 
-
-
-
-        # just for checking -> will be in extra module
-        for i in range(0, len(confidence)):
-            (startX, startY, endX, endY) = coordinates[i]
-            text = "{:.2f}%".format(confidence[i] * 100)
-            y = endY + 20 if endY + 20 > 10 else endY - 10
-            cv2.rectangle(frame, (startX, startY), (endX, endY),
-                            (0, 0, 255), 2)
-            cv2.putText(frame, text, (startX, y),
-                        cv2.FONT_HERSHEY_SIMPLEX, 0.45, (0, 0, 255), 2)
 
         # show the output frame
         cv2.imshow("Frame", frame)

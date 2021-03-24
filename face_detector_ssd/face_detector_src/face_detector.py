@@ -40,8 +40,7 @@ def face_detector(image):
         # compute the (x, y)-coordinates of the bounding box for the
         # object
         box = detections[0, 0, i, 3:7] * np.array([w, h, w, h])
-        print(box)
-        print(confid_all)
+        #print(confid_all)
         (startX, startY, endX, endY) = box.astype("int")
         startX -= 15
         startY -= 15
@@ -52,7 +51,7 @@ def face_detector(image):
         confidence[i] = confid_all
         coordinates[i] = (startX, startY, endX, endY)
 
-    return coordinates, confidence, detections
+    return coordinates, confidence
 
 
 
