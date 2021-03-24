@@ -24,6 +24,8 @@ while(video.isOpened()):
         #Get the frame from the video stream and resize to 400 px
         frame = imutils.resize(frame,width=400)
 
+        # get persons in the picture
+        
         # get coordinates and confidence for each detected face
         face_boxes, confidence = face_detector(frame)
         # get distance to cam and close objects 

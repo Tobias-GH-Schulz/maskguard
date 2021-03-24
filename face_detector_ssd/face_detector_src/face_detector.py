@@ -1,11 +1,10 @@
 # import the necessary packages
 import numpy as np
-import argparse
 import cv2
 
 # defining prototext and caffemodel paths
-caffeModel = "../face_detector_model/res10_300x300_ssd_iter_140000.caffemodel"
-prototextPath = "../face_detector_model/deploy.prototxt"
+caffeModel = "../face_detector_model/face_model/res10_300x300_ssd_iter_140000.caffemodel"
+prototextPath = "../face_detector_model/face_model/deploy.prototxt"
 
 # Load Model
 print("Loading model...................")
@@ -25,7 +24,7 @@ def face_detector(image):
                                 1.0,(300,300),
                                 (104.0, 177.0, 123.0))
 
-    # passing blob through the network to detect and pridiction
+    # passing blob through the network to detect and predict
     net.setInput(blob)
     detections = net.forward()
 
