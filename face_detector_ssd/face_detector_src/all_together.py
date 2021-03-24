@@ -80,7 +80,7 @@ while(video.isOpened()):
             confidence = detections[0, 0, i, 2]
 
             # filter detections by confidence greater than the minimum confidence
-            if confidence < 0.5 :
+            if confidence < 0.2 :
                 continue
 
             # Determine the (x, y)-coordinates of the bounding box for the
@@ -144,7 +144,7 @@ while(video.isOpened()):
             # Convert cms to feet
             cv2.putText(frame, 'Dist. to cam: {i} cm'.format(i=round(pos_dict[i][2],4)), (startX, y),
                         cv2.FONT_HERSHEY_SIMPLEX, 0.5, COLOR, 2)
-            cv2.putText(frame, mask_pred, (startX, y + 30), cv2.FONT_HERSHEY_SIMPLEX, 0.5, [255, 100 , 100], 2)
+            #cv2.putText(frame, mask_pred, (startX, y + 30), cv2.FONT_HERSHEY_SIMPLEX, 0.5, [255, 100 , 100], 2)
 
         # show the output frame
         cv2.imshow("Frame", frame)
