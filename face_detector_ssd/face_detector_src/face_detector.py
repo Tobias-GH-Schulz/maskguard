@@ -12,7 +12,7 @@ print("Loading model...................")
 net = cv2.dnn.readNetFromCaffe(prototextPath,caffeModel)
 
 def face_detector(image):
-    coordinates = dict()
+    face_boxes = dict()
     confidence = dict()
 
     # extract the original dimensions
@@ -47,11 +47,11 @@ def face_detector(image):
         endX += 15
         endY += 15
 
-        # Save coordinates
+        # Save confidence and coordinates for each detected face
         confidence[i] = confid_all
-        coordinates[i] = (startX, startY, endX, endY)
+        face_boxes[i] = (startX, startY, endX, endY)
 
-    return coordinates, confidence
+    return face_boxes, confidence
 
 
 

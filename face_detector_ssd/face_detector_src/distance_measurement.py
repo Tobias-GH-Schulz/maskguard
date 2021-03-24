@@ -7,16 +7,16 @@ import time
 import cv2
 import torch
 
-def get_distance(coordinates):
+def get_distance(face_boxes):
     # Focal length
     F = 290
     # initialize dict for object positions
     pos_dict = dict()
 
-    print("Coordinates in distance: ", coordinates)
+    print("Coordinates in distance: ", face_boxes)
 
-    for i in range(0, len(coordinates)):
-        (startX, startY, endX, endY) = coordinates[i]
+    for i in range(0, len(face_boxes)):
+        (startX, startY, endX, endY) = face_boxes[i]
         
         # Mid point of bounding box
         x_mid = round((startX+endX)/2,4)
