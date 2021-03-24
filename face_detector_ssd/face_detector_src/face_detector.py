@@ -46,6 +46,14 @@ def face_detector(image):
         startY -= 15
         endX += 15
         endY += 15
+        if startX < 0:
+            startX = 0
+        if startY < 0:
+            startY = 0
+        if endX > w:
+            endX = w
+        if endY > h:
+            endY = h
 
         # Save confidence and coordinates for each detected face
         confidence[i] = confid_all

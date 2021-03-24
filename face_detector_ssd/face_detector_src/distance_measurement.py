@@ -12,26 +12,22 @@ def get_distance(face_boxes):
     F = 290
     # initialize dict for object positions
     pos_dict = dict()
-
-    print("Coordinates in distance: ", face_boxes)
     
     for i in range(0, len(face_boxes)):
         (startX, startY, endX, endY) = face_boxes[i]
-        if (np.array([startX, startY, endX, endY])>=0).all():
-            # Mid point of bounding box
-            x_mid = round((startX+endX)/2,4)
-            y_mid = round((startY+endY)/2,4)
+        # Mid point of bounding box
+        x_mid = round((startX+endX)/2,4)
+        y_mid = round((startY+endY)/2,4)
 
-            height = round(endY-startY,4)
+        height = round(endY-startY,4)
 
-            # Distance from camera based on triangle similarity
-            distance = (22 * F)/height
-            print("Distance(cm):{dist}\n".format(dist=distance))
+        # Distance from camera based on triangle similarity
+        distance = (22 * F)/height
 
-            # Mid-point of bounding boxes (in cm) based on triangle similarity technique
-            x_mid_cm = (x_mid * distance) / F
-            y_mid_cm = (y_mid * distance) / F
-            pos_dict[i] = (x_mid_cm,y_mid_cm,distance)
+        # Mid-point of bounding boxes (in cm) based on triangle similarity technique
+        x_mid_cm = (x_mid * distance) / F
+        y_mid_cm = (y_mid * distance) / F
+        pos_dict[i] = (x_mid_cm,y_mid_cm,distance)
 
     if pos_dict is not None:
         # Distance between every object detected in a frame

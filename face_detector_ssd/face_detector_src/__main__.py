@@ -28,21 +28,16 @@ while(video.isOpened()):
         face_boxes, confidence = face_detector(frame)
         # get distance to cam and close objects 
         pos_dict, close_objects = get_distance(face_boxes)
-        # get gender
+        # get age and gender
         age, gender = get_age_gender(frame, face_boxes)
 
         # annotations
         frame_head = annotate_heads(frame, face_boxes, confidence)
         frame_dist = annotate_distance(frame_head, face_boxes, pos_dict, close_objects)
         frame_age = annotate_age_gender(frame_dist, face_boxes, age, gender)
-
-        if frame_age is not None:
-            output = frame_age
-        else: 
-            output = frame_copy
         
         # show the output frame
-        cv2.imshow("Frame", output)
+        cv2.imshow("Frame", frame_age)
         cv2.resizeWindow('Frame',800,800)
         key = cv2.waitKey(1) & 0xFF
 
