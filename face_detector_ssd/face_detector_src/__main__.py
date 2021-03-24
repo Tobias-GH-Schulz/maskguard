@@ -32,12 +32,12 @@ while(video.isOpened()):
         age, gender = get_age_gender(frame, face_boxes)
 
         # annotations
-        frame = annotate_heads(frame, face_boxes, confidence)
-        frame = annotate_distance(frame, face_boxes, pos_dict, close_objects)
-        frame = annotate_age_gender(frame, face_boxes, age, gender)
+        frame_head = annotate_heads(frame, face_boxes, confidence)
+        frame_dist = annotate_distance(frame_head, face_boxes, pos_dict, close_objects)
+        frame_age = annotate_age_gender(frame_dist, face_boxes, age, gender)
 
-        if frame is not None:
-            output = frame
+        if frame_age is not None:
+            output = frame_age
         else: 
             output = frame_copy
         
