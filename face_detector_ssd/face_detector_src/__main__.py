@@ -6,7 +6,7 @@ from imutils.video import VideoStream
 from face_detector import face_detector
 from distance_measurement import get_distance
 from annotations import *
-from gender_detector import get_gender
+from age_gender_detector import get_age_gender
 
 frame_no = 0
 
@@ -19,22 +19,30 @@ while(video.isOpened()):
     check, frame = video.read()
     if frame is not None:
         frame_no += 1
+        frame_copy = frame.copy()
 
         #Get the frame from the video stream and resize to 400 px
         frame = imutils.resize(frame,width=400)
 
+        # get coordinates and confidence for each detected face
         face_boxes, confidence = face_detector(frame)
+        # get distance to cam and close objects 
         pos_dict, close_objects = get_distance(face_boxes)
-        gender = get_gender(frame, face_boxes)
-        # get the faces
+        # get gender
+        age, gender = get_age_gender(frame, face_boxes)
 
         # annotations
         frame = annotate_heads(frame, face_boxes, confidence)
         frame = annotate_distance(frame, face_boxes, pos_dict, close_objects)
-        frame = annotate_gender(frame, face_boxes, gender)
+        frame = annotate_age_gender(frame, face_boxes, age, gender)
 
+        if frame is not None:
+            output = frame
+        else: 
+            output = frame_copy
+        
         # show the output frame
-        cv2.imshow("Frame", frame)
+        cv2.imshow("Frame", output)
         cv2.resizeWindow('Frame',800,800)
         key = cv2.waitKey(1) & 0xFF
 
