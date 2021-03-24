@@ -3,6 +3,7 @@ import numpy as np
 import imutils
 import time
 from imutils.video import VideoStream
+from person_detector import person_detector
 from face_detector import face_detector
 from distance_measurement import get_distance
 from annotations import *
@@ -25,7 +26,7 @@ while(video.isOpened()):
         frame = imutils.resize(frame,width=400)
 
         # get persons in the picture
-        
+        # person_boxes, person_confidence = person_detector(frame)
         # get coordinates and confidence for each detected face
         face_boxes, confidence = face_detector(frame)
         # get distance to cam and close objects 
@@ -34,6 +35,7 @@ while(video.isOpened()):
         age, gender = get_age_gender(frame, face_boxes)
 
         # annotations
+        #frame_person = annotate_persons(frame, person_boxes, person_confidence)
         frame_head = annotate_heads(frame, face_boxes, confidence)
         frame_dist = annotate_distance(frame_head, face_boxes, pos_dict, close_objects)
         frame_age = annotate_age_gender(frame_dist, face_boxes, age, gender)

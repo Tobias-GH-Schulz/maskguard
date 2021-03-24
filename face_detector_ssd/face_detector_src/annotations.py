@@ -1,6 +1,21 @@
 import cv2
 import numpy as np        
-        
+
+def annotate_persons(persons_frame, persons_boxes, confidence):
+    persons_frame_copy = persons_frame.copy()
+    if persons_boxes and confidence is not None:
+        for i in range(0, len(confidence)):
+            (startX, startY, endX, endY) = persons_boxes[i]
+            text = "{:.2f}%".format(confidence[i] * 100)
+            y = endY + 20 if endY + 20 > 10 else endY - 10
+            cv2.rectangle(persons_frame, (startX, startY), (endX, endY),
+                            (0, 0, 255), 2)
+            cv2.putText(persons_frame, text, (startX, y),
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.45, (0, 0, 255), 1)
+        return persons_frame
+    else:
+        return persons_frame_copy
+
 def annotate_heads(heads_frame, face_boxes, confidence):
     heads_frame_copy = heads_frame.copy()
     if face_boxes and confidence is not None:

@@ -1,8 +1,8 @@
 import numpy as np
 import cv2
 
-personModel = "../face_detector_model/person_model/res10_300x300_ssd_iter_140000.caffemodel"
-prersonProto = "../face_detector_model/person_model/deploy.prototxt"
+personModel = "../face_detector_model/person_model/mobilenet.caffemodel"
+personProto = "../face_detector_model/person_model/mobilenet.prototxt"
 
 personNet=cv2.dnn.readNet(personModel,personProto)
 
@@ -23,23 +23,41 @@ def person_detector(image):
                                 (104.0, 177.0, 123.0))
 
     # passing blob through the network to detect and predict
-    net.setInput(blob)
-    detections = net.forward()    
+    personNet.setInput(blob)
+    detections = personNet.forward()    
 
     # loop over the detections
     for i in range(0, detections.shape[2]):
         # extract the confidence and prediction
-        confid_all = detections[0, 0, i, :]
+        confid_all = detections[0, 0, i, 2]
+        obj_class = detections[0, 0, i, 1]
 
-        # filter detections by confidence greater than the minimum
-        if confid_all < 0.5:
+        if obj_class == person_class:
             continue
-        
+        # filter detections by confidence greater than the minimum
+        if confid_all > 0.5:
+            continue
+
+        # compute the (x, y)-coordinates of the bounding box for the
+        # object
+        box = detections[0, 0, i, 3:7] * np.array([w, h, w, h])
+        print(confid_all)
+        (startX, startY, endX, endY) = box.astype("int")
+        startX -= 15
+        startY -= 15
+        endX += 15
+        endY += 15
+        if startX < 0:
+            startX = 0
+        if startY < 0:
+            startY = 0
+        if endX > w:
+            endX = w
+        if endY > h:
+            endY = h
+
         # Save confidence and coordinates for each detected face
         confidence[i] = confid_all
+        person_boxes[i] = (startX, startY, endX, endY)
 
-        	  k = detections.shape[2]
-    	  obj_data = []
-    	  for i in np.arange(0, k):
-            obj = detections[0, 0, i, :]
-            obj_data.append(obj)
+    return person_boxes, confidence       
