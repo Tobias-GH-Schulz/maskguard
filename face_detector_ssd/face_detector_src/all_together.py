@@ -93,7 +93,7 @@ while(video.isOpened()):
             endY += 15
 
             face = frame[startY:endY, startX:endX]
-            mask_pred = feedClassifier(classifier, face) 
+            mask_pred = feedClassifier(classifier, face_adjust) 
 
             # draw the bounding box of the face along with the associated
             text = "{:.2f}%".format(confidence * 100)
@@ -146,13 +146,13 @@ while(video.isOpened()):
                         cv2.FONT_HERSHEY_SIMPLEX, 0.5, COLOR, 2)
             cv2.putText(frame, mask_pred, (startX, y + 30), cv2.FONT_HERSHEY_SIMPLEX, 0.5, [255, 100 , 100], 2)
 
-
-
         # show the output frame
         cv2.imshow("Frame", frame)
-#        cv2.imshow("Face", face)
+        #cv2.imshow("Face", face)
+        #cv2.imshow("Face Adjusted", face_adjusted)
         cv2.resizeWindow('Frame',800,800)
-        cv2.resizeWindow('Face',800,800)
+        #cv2.resizeWindow('Face',800,800)
+        #cv2.resizeWindow('Face Adjusted',800,800)
         key = cv2.waitKey(1) & 0xFF
 
         # if the `q` key was pressed, break from the loop

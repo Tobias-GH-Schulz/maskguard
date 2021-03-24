@@ -6,32 +6,62 @@ import imutils
 import time
 import cv2
 import torch
+from torchvision import transforms
+from PIL import Image
+from adaptive_gamma_correction import a_g_c
+from automatic_brightness import a_b_a_c
 
+def feedClassifier(model, array_img):
+    input_image = Image.fromarray(array_img)
+    preprocess = transforms.Compose([
+        transforms.Resize((300,300)),
+        transforms.ToTensor(),
+        transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+    ])
+    input_tensor = preprocess(input_image)
+    input_batch = input_tensor.unsqueeze(0) # create a mini-batch as expected by the model
+
+    # move the input and model to GPU for speed if available
+    if torch.cuda.is_available():
+        input_batch = input_batch.to('cuda')
+        model.to('cuda')
+
+    with torch.no_grad():
+        output = model(input_batch)
+    
+    # The output has unnormalized scores. To get probabilities, you can run a softmax on it.
+    probabilities = torch.nn.functional.softmax(output[0], dim=0)
+    _, pred = torch.max(output, 1)
+    return ('mask', 'no mask')[pred]
 
 #defining prototext and caffemodel paths
-caffeModel = "/Users/tobiasschulz/Documents/GitHub/mask-detector/face_detector_ssd/face_detector_model/res10_300x300_ssd_iter_140000.caffemodel"
-prototextPath = "/Users/tobiasschulz/Documents/GitHub/mask-detector/face_detector_ssd/face_detector_model/deploy.prototxt"
-
-mask_classifier = torch.load("/Users/tobiasschulz/Documents/GitHub/mask-detector/mnv2_mask_classifier.pth")
-mask_classifier.eval()
-
+caffeModel = "../face_detector_model/res10_300x300_ssd_iter_140000.caffemodel"
+prototextPath = "../face_detector_model/deploy.prototxt"
+maskModel = "../../mnv2_mask_classifier.pth"
 #Load Model
 print("Loading model...................")
 net = cv2.dnn.readNetFromCaffe(prototextPath,caffeModel)
 
+classifier = torch.load(maskModel, map_location='cpu')
+
 frame_no = 0
-
-
 
 # initialize the video stream to get the live video frames
 print("[INFO] starting video stream...")
 video = cv2.VideoCapture(0)
 time.sleep(2.0)
-
+mask_pred = ''
 while(video.isOpened()):
     check, frame = video.read()
     if frame is not None:
         frame_no += 1
+
+        #if frame.mean() < 20:
+        #    frame = frame + 100
+        #    print("Mean adjusted")
+        #else:
+        #    continue
+        #print(frame.mean())
 
         #Get the frams from the video stream and resize to 400 px
         frame = imutils.resize(frame,width=400)
@@ -66,13 +96,16 @@ while(video.isOpened()):
             # object
             box = detections[0, 0, i, 3:7] * np.array([w, h, w, h])
             (startX, startY, endX, endY) = box.astype("int")
+            startX -= 15
+            startY -= 15
+            endX += 15
+            endY += 15
 
-            # crop the face from the frame
             face = frame[startY:endY, startX:endX]
-
-            # predict if person wears mask or not
-            #predictions = mask_classifier.forward(face)
-            #print(predictions.numpy().argmax())
+           
+            face = face.clip(0,255)
+            face_adjusted = a_g_c(face)
+            mask_pred = feedClassifier(classifier, face_adjusted) 
 
             # draw the bounding box of the face along with the associated
             text = "{:.2f}%".format(confidence * 100)
@@ -123,15 +156,15 @@ while(video.isOpened()):
             # Convert cms to feet
             cv2.putText(frame, 'Dist. to cam: {i} cm'.format(i=round(pos_dict[i][2],4)), (startX, y),
                         cv2.FONT_HERSHEY_SIMPLEX, 0.5, COLOR, 2)
-
-
-
+            cv2.putText(frame, mask_pred, (startX, y + 30), cv2.FONT_HERSHEY_SIMPLEX, 0.5, [255, 100 , 100], 2)
 
         # show the output frame
         cv2.imshow("Frame", frame)
-        cv2.imshow("Face", face)
+        #cv2.imshow("Face", face)
+        #cv2.imshow("Face Adjusted", face_adjusted)
         cv2.resizeWindow('Frame',800,800)
-        cv2.resizeWindow('Face',800,800)
+        #cv2.resizeWindow('Face',800,800)
+        #cv2.resizeWindow('Face Adjusted',800,800)
         key = cv2.waitKey(1) & 0xFF
 
         # if the `q` key was pressed, break from the loop
