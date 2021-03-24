@@ -52,7 +52,7 @@ def face_detector(image):
         confidence[i] = confid_all
         coordinates[i] = (startX, startY, endX, endY)
 
-    return coordinates, confidence 
+    return coordinates, confidence, detections
 
 
 
