@@ -3,6 +3,7 @@ import numpy as np
 import imutils
 import time
 from imutils.video import VideoStream
+from Annotater import Annotater
 from face_detector import *
 from get_distance import *
 from age_gender_detector import *
@@ -15,12 +16,15 @@ genderModel = "models/gender_model/gender_net.caffemodel"
 genderProto = "models/gender_model/gender_deploy.prototxt"
 ageProto = "models/age_model/age_deploy.prototxt"
 ageModel = "models/age_model/age_net.caffemodel"
+personProto = "models/person_model/mobilenet.prototxt"
+personModel = "models/person_model/mobilenet.caffemodel"
 
 # initialize detectors
 face_detector = FaceDetector(faceProto, faceModel)
 FACE_CONFID_THRESH = 0.6
 age_gender_detector = AgeGenderDetector(ageProto, ageModel,
                                         genderProto, genderModel)
+person_detector = SSD()
 # initialize distance measurement
 FOCAL = 290
 DIST_REF = 22
