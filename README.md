@@ -3,7 +3,7 @@
 
 ### PSEUDO - CODE for __main__.py 
 
-```
+```python
 person_detector = PersonDetector(pd_model_path)
 face_detector = FaceDetector(fd_model_path)
 age_gender_detector = AgeGenderDetector(agd_model_path)
@@ -79,7 +79,7 @@ def predict(image):
   return (string)mask_state
 ```
 __Annotater(image)__
-```
+```python
 def __init__(image):
   self.image = image
   self.annotated = None
