@@ -1,4 +1,4 @@
-
+import cv2
 
 class Annotater():
     def __init__(self, image):
