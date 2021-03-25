@@ -17,22 +17,21 @@ for frame in video:
   annotater.faces += face_boxes # look below this snippet to see Annotater() fields
   face_crops = [frame[face_box] for face_box in face_boxes]
   
-  # if no faces found in the frame, let's try to find bodies
-  if face_boxes.empty():
-    body_boxes = person_detector.detect(frame)
-    if body_boxes.empty():
-      # found nothing - continue to the next frame
-    
-    annotater.bodies += body_boxes
-    
-    # crop out the bodies
-    body_crops = [frame[body_box] for body_box in body_boxes]
-    
-    # try to detect faces in the cropped bodies
-    face_boxes = [face_detector(crop) for crop in body_crops]
-    face_crops = [crop[face_box] for crop, face_box in zip(body_crops, face_boxes)]
-    for face_box, body_box in zip(face_boxes, body_boxes):
-      annotater.faces += annotater.adjust(face_box, body_box) # adjusting indices to frame, see adjust() method
+  # let's try to find bodies
+  body_boxes = person_detector.detect(frame)
+  if body_boxes.empty() and face_boxes.empty():
+    # found nothing - continue to the next frame
+
+  annotater.bodies += body_boxes
+
+  # crop out the bodies
+  body_crops = [frame[body_box] for body_box in body_boxes]
+
+  # try to detect faces in the cropped bodies
+  face_boxes = [face_detector(crop) for crop in body_crops]
+  face_crops += [crop[face_box] for crop, face_box in zip(body_crops, face_boxes)]
+  for face_box, body_box in zip(face_boxes, body_boxes):
+    annotater.faces += annotater.adjust(face_box, body_box) # adjusting indices to frame, see adjust() method
 
   
   for face_crop in face_crops:
