@@ -1,4 +1,51 @@
-# mask-detector
+# mask-detector assembly plan
+
+
+### PSEUDO - CODE for __main__.py 
+
+```
+person_detector = PersonDetector(pd_model_path)
+face_detector = FaceDetector(fd_model_path)
+age_gender_detector = AgeGenderDetector(agd_model_path)
+face_mask_classifier = FaceMaskClassifier(fmc_model_path)
+
+for frame in video:
+  annotater = Annotater(frame)
+
+  # detect() returns tuple of indices of type slice(), indices indicate how to slice the input image to crop the detected object
+  face_boxes = face_detector.detect(frame) 
+  annotater.faces += face_boxes # look below this snippet to see Annotater() fields
+  face_crops = [frame[face_box] for face_box in face_boxes]
+  
+  # if no faces found in the frame, let's try to find bodies
+  if face_boxes.empty():
+    body_boxes = person_detector.detect(frame)
+    if body_boxes.empty():
+      # found nothing - continue to the next frame
+    
+    annotater.bodies += body_boxes
+    
+    # crop out the bodies
+    body_crops = [frame[body_box] for body_box in body_boxes]
+    
+    # try to detect faces in the cropped bodies
+    face_boxes = [face_detector(crop) for crop in body_crops]
+    face_crops = [crop[face_box] for crop, face_box in zip(body_crops, face_boxes)]
+    for face_box, body_box in zip(face_boxes, body_boxes):
+      annotater.faces += annotater.adjust(face_box, body_box) # adjusting indices to frame, see adjust() method
+
+  
+  for face_crop in face_crops:
+    age, gender = age_gender_detector.predict(face_crop)
+    mask_status = face_mask_classifier.predict(face_crop)
+    annotater.ages.append(age) 
+    annotater.genders.append(gender)
+    annotater.mask_statuses.append(mask_status)
+ 
+  annotated_frame = annotater.update()
+  imshow(annotated_frame)
+```
+
 
 __PersonDetector(pd_model_path)__ 
 ```
@@ -61,41 +108,3 @@ def update(self):
   self.annotated = annotated
   return annotated
  ``` 
-### PSEUDO - CODE for __main__.py 
-
-```
-person_detector = PersonDetector(pd_model_path)
-face_detector = FaceDetector(fd_model_path)
-age_gender_detector = AgeGenderDetector(agd_model_path)
-face_mask_classifier = FaceMaskClassifier(fmc_model_path)
-
-for frame in video:
-  annotater = Annotater(frame)
-
-  face_boxes_f = face_detector.detect(frame)
-  face_crops = [frame[face_box_f] for face_box_f in face_boxes_f]
-  annotater.faces += face_boxes_f
-
-  if face_boxes.empty():
-    body_boxes = person_detector.detect(frame)
-    annotater.bodies += body_boxes
-    if body_boxes.empty():
-      return
-
-    body_crops = [frame[body_box] for body_box in body_boxes]
-
-    face_boxes_b = [face_detector(body_crop) for body_crop in body_crops]
-    face_crops = [body_crop[face_box] for body_crop, face_box in zip(body_crops, face_boxes_b)]
-    for face_box_b, body_box in zip(face_boxes_b, body_boxes):
-      annotater.faces += annotater.adjust(face_box_b, body_box)
-
-  for face_crop in face_crops:
-    age, gender = age_gender_detector.predict(face_crop)
-    mask_status = face_mask_classifier.predict(face_crop)
-    annotater.ages.append(age) 
-    annotater.genders.append(gender)
-    annotater.mask_statuses.append(mask_status)
- 
-  annotated_frame = annotater.update()
-  imshow(annotated_frame)
-```
