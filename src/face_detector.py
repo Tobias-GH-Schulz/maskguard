@@ -60,4 +60,10 @@ class FaceDetector:
             confidence.append(confid_all)
             face_boxes.append((startX, startY, endX, endY))
 
-        return tuple(face_boxes), tuple(confidence)
+        if len(face_boxes) > 1:
+            face_boxes = tuple(face_boxes)
+            confidence = tuple(confidence)
+        elif len(face_boxes) == 0:
+            face_boxes.append((0, 0, self.h, self.w))
+        print("RETURN", face_boxes)
+        return face_boxes, confidence

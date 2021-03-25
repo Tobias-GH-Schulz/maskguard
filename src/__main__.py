@@ -40,7 +40,7 @@ video = cv2.VideoCapture(0)
 time.sleep(2.0)
 
 def cropout(img, box):
-    print("BOX:", box)
+    print("BOX", box)
     return img[box[1]:box[3], box[0]:box[2]]
 
 while(video.isOpened()):
@@ -55,15 +55,16 @@ while(video.isOpened()):
         annotater.faces += face_boxes
         face_crops = [cropout(frame, face_box) for face_box in face_boxes]
         body_boxes, _ = person_detector.detect(frame, BODY_CONFID_THRESH)
-
+        print(body_boxes)
         if len(body_boxes) != 0:
             annotater.bodies += body_boxes
             body_crops = [cropout(frame, body_box) for body_box in body_boxes]
 
-            face_boxes = [face_detector.detect(body_crop, FACE_CONFID_THRESH)[0] for body_crop in body_crops]
-            face_crops += [cropout(body_crop, face_box) for body_crop, face_box in zip(body_crops, face_boxes)]
-            for face_box, body_box in zip(face_boxes, body_boxes):
-                annotater.faces += annotater.recalc(face_box, body_box)
+            face_boxes = [face_detector.detect(body_crop, FACE_CONFID_THRESH)[0][0] for body_crop in body_crops]
+            if len(face_boxes[0]):
+                face_crops += [cropout(body_crop, face_box) for body_crop, face_box in zip(body_crops, face_boxes)]
+                for face_box, body_box in zip(face_boxes, body_boxes):
+                    annotater.faces.append(annotater.recalc(face_box, body_box))
 
         if len(face_crops) != 0:
             for face_crop in face_crops:

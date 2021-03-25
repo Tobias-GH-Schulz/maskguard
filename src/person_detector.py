@@ -64,4 +64,7 @@ class PersonDetector:
                 confidence.append(confid_all)
                 person_boxes.append((startX, startY, endX, endY))
 
-        return tuple(person_boxes), tuple(confidence)
+        if len(person_boxes) > 1:
+            person_boxes = tuple(person_boxes)
+            confidence = tuple(confidence)
+        return person_boxes, confidence
