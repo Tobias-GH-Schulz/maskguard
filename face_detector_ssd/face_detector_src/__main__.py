@@ -7,7 +7,7 @@ from face_detector import *
 from get_distance import *
 from annotations import *
 from age_gender_detector import *
-from person_detector import *
+#from person_detector import *
 
 # set model paths
 faceModel = "../face_detector_model/face_model/res10_300x300_ssd_iter_140000.caffemodel"
