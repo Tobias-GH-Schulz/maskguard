@@ -8,7 +8,6 @@ class BrightnessOptimizer:
 
         hsv = cv2.cvtColor(self.frame_copy, cv2.COLOR_BGR2HSV)
         h, s, v = cv2.split(hsv)
-        print(np.mean(v))
 
         if np.mean(v) > 120:
             return self.frame
