@@ -7,9 +7,11 @@ from face_detector import *
 from get_distance import *
 from annotations import *
 from age_gender_detector import *
-#from person_detector import *
+from person_detector import *
 
 # set model paths
+personModel = "../face_detector_model/person_model/mobilenet.caffemodel"
+personProto = "../face_detector_model/person_model/mobilenet.prototxt"
 faceModel = "../face_detector_model/face_model/res10_300x300_ssd_iter_140000.caffemodel"
 faceProto = "../face_detector_model/face_model/deploy.prototxt"
 genderModel = "../face_detector_model/gender_model/gender_net.caffemodel"
@@ -18,6 +20,7 @@ ageProto = "../face_detector_model/age_model/age_deploy.prototxt"
 ageModel = "../face_detector_model/age_model/age_net.caffemodel"
 
 # initialize detectors
+person_detector = PersonDetector(personProto, personModel)
 face_detector = FaceDetector(faceProto, faceModel)
 age_gender_detector = AgeGenderDetector(ageProto, ageModel, 
                                         genderProto, genderModel)
@@ -41,6 +44,7 @@ while(video.isOpened()):
         #Get the frame from the video stream and resize to 400 px
         frame = imutils.resize(frame,width=400)
 
+        person_boxes, person_confidence = person_detector.detect(frame, 0.95)
         # get coordinates and confidence for each detected face
         face_boxes, face_confidence = face_detector.detect(frame, 0.5) 
         # get distance to cam and close objects 
@@ -49,6 +53,7 @@ while(video.isOpened()):
         #age, gender = age_gender_detector(face)
         
         # annotations
+        frame_person = annotate_heads(frame, person_boxes, person_confidence)
         frame_head = annotate_heads(frame, face_boxes, face_confidence)
         frame_dist = annotate_distance(frame, face_boxes, pos_dict, close_objects)
         #frame_age = annotate_age_gender(frame_dist, face_boxes, age, gender)
