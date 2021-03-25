@@ -17,8 +17,9 @@ class Mask:
         
         binary_mask = cv2.threshold(difference, 0, 1, cv2.THRESH_BINARY+
                                                         cv2.THRESH_OTSU)[1]
-
-        masked_frame = cv2.bitwise_and(self.frame_copy, self.frame_copy, mask=binary_mask)
+        kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (10, 10))
+        dilation = cv2.dilate(binary_mask, kernel, 5)
+        masked_frame = cv2.bitwise_and(self.frame_copy, self.frame_copy, mask=dilation)
 
         return masked_frame
 
@@ -36,8 +37,9 @@ class Mask:
         
         binary_mask = cv2.threshold(frame_blur, 0, 255, cv2.THRESH_BINARY+
                                                         cv2.THRESH_OTSU)[1]
-        frame_canny = cv2.Canny(binary_mask, 100, 200)
-        all_cnts = cv2.findContours(frame_canny.copy(), cv2.RETR_EXTERNAL, 
+        dilation = cv2.dilate(binary_mask, None)
+        #frame_canny = cv2.Canny(binary_mask, 100, 200)
+        all_cnts = cv2.findContours(binary_mask.copy(), cv2.RETR_EXTERNAL, 
                                 cv2.CHAIN_APPROX_SIMPLE)[0]
        
         sorted_cnts = sorted(all_cnts, key=cv2.contourArea, reverse=True)
