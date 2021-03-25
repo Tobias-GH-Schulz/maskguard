@@ -8,6 +8,9 @@ from get_distance import *
 from annotations import *
 from age_gender_detector import *
 from person_detector import *
+from cap_background import *
+from person_mask import *
+from Brightness_optimizer import *
 
 # set model paths
 personModel = "../face_detector_model/person_model/mobilenet.caffemodel"
@@ -28,6 +31,11 @@ age_gender_detector = AgeGenderDetector(ageProto, ageModel,
 focal = 290
 distRef = 22   
 dist = Distance(focal, distRef) 
+# capture background from first 30 frames
+backgroundFrame = Background().capture(capture_duration = 2)
+# initialize the background mask
+# keep person out of video for the first video shot
+mask = Mask(backgroundFrame)
 
 # initialize the video stream to get the live video frames
 frame_no = 0
@@ -39,12 +47,18 @@ while(video.isOpened()):
     check, frame = video.read()
     if frame is not None:
         frame_no += 1
-        frame_copy = frame.copy()
 
         #Get the frame from the video stream and resize to 400 px
         frame = imutils.resize(frame,width=400)
+        frame_copy = frame.copy()
+        
+        # brightness optimizing
+        frame_optimized = BrightnessOptimizer().optimize(frame)
+        
+        # masking
+        masked_frame = mask.create(frame_copy, 11)
 
-        person_boxes, person_confidence = person_detector.detect(frame, 0.95)
+        person_boxes, person_confidence = person_detector.detect(masked_frame, 0.95)
         # get coordinates and confidence for each detected face
         face_boxes, face_confidence = face_detector.detect(frame, 0.5) 
         # get distance to cam and close objects 
@@ -60,6 +74,8 @@ while(video.isOpened()):
         
         # show the output frame
         cv2.imshow("Frame", frame)
+        cv2.imshow("Frame optimized", frame_optimized)
+        cv2.imshow("Masked Back", masked_frame)
         cv2.resizeWindow('Frame',800,800)
         key = cv2.waitKey(1) & 0xFF
 

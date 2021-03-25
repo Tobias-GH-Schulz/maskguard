@@ -31,8 +31,6 @@ class PersonDetector:
 
     def detect(self, frame, confidThresh):
         (self.h, self.w) = frame.shape[:2]
-        print(self.h)
-        print(self.w)
         blob = self.proc.get_blob(frame)
         self.personNet.setInput(blob)
         detections = self.personNet.forward()
