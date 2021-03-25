@@ -6,7 +6,7 @@ def detect(image):
   
   slices = (slice(detected_box) for detected_box in detected_boxes)
   
-  return slices(tuple)
+  return (tuple)slices
 ```
 
 __FaceDetector(fd_model_path)__
@@ -15,21 +15,21 @@ def detect(image):
   
   slices = (slice(detected_box) for detected_box in detected_boxes)
   
-  return slices(tuple)
+  return (tuple)slices
 ```
   
 __AgeGenderClassifier(agd_model_path)__  << probably should be two classifiers
 ```
 def predict(image):
   
-  return age(string), gender(string)
+  return (string)age, (string)gender
 ```
 
 __FaceMaskClassifier(fmc_model_path)__
 ```
 def predict(image):
   
-  return mask_state(string)
+  return (string)mask_state
 ```
 __Annotater(image)__
 ```
