@@ -62,4 +62,4 @@ class FaceDetector:
             confidence.append(confid_all)
             face_boxes.append((startX, startY, endX, endY))       
         
-        return face_boxes, confidence
+        return tuple(face_boxes), tuple(confidence)
