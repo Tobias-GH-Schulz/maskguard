@@ -19,13 +19,13 @@ class Annotater():
         ref(array) - reference coordinates
         '''
 
-        # NOT SURE, MAY CAUSE A BUG
         return (ref[0] + box[0], ref[1] + box[1], ref[2] - box[2], ref[3] - box[3])
 
 
     def update(self):
-        for face, body in zip(self.faces, self.bodies):
+        for face in self.faces:
             a = cv2.rectangle(self.annotated, face[:2], face[2:], [255,0,0], 3)
+        for body in self.bodies:
             a = cv2.rectangle(self.annotated, body[:2], body[2:], [0,255,0], 3)
 
         for ix, status in enumerate(self.mask_statuses):

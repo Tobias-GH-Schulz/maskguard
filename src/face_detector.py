@@ -30,7 +30,7 @@ class FaceDetector:
         self.proc = FrameProcessor()
         self.net = FaceModelLoader.load(faceProto, faceModel)
 
-    def detect(self, frame, confidThresh):
+    def detect(self, frame, confidThresh, single = False):
         (self.h, self.w) = frame.shape[:2]
         blob = self.proc.get_blob(frame)
         self.net.setInput(blob)
@@ -40,11 +40,10 @@ class FaceDetector:
         confidence = []
         for i in range(0, detections.shape[2]):
             # extract the confidence and prediction
-            confid_all = detections[0, 0, i, 2]
-
+            confid = detections[0, 0, i, 2]
             # filter detections by confidence greater than the minimum
-            if confid_all < confidThresh:
-                continue
+            if confid < confidThresh:
+                break
             # compute the (x, y)-coordinates of the bounding box for the
             # object
             box = detections[0, 0, i, 3:7] * np.array([self.w,
@@ -52,18 +51,13 @@ class FaceDetector:
                                                        self.w,
                                                        self.h])
             (startX, startY, endX, endY) = box.astype("int")
-            startX = max(0, startX - 15)
-            startY = max(0, startY - 15)
-            endX += 15
-            endY += 15
-
-            confidence.append(confid_all)
+            if single:
+               return (startX, startY, endX, endY), confid
+            confidence.append(confid)
             face_boxes.append((startX, startY, endX, endY))
 
         if len(face_boxes) > 1:
             face_boxes = tuple(face_boxes)
             confidence = tuple(confidence)
-        elif len(face_boxes) == 0:
-            face_boxes.append((0, 0, self.h, self.w))
-        print("RETURN", face_boxes)
         return face_boxes, confidence
+
