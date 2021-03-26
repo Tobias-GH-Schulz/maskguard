@@ -41,7 +41,7 @@ class Annotater():
             a = cv2.rectangle(self.annotated, face[:2], face[2:], COLOR, 3)
 
         for body in self.bodies:
-            a = cv2.rectangle(self.annotated, body[:2], body[2:], [0,255,0], 3)
+            a = cv2.rectangle(self.annotated, body[:2], body[2:], [255,0,0], 3)
 
         for ix, status in enumerate(self.mask_statuses):
             y = self.faces[ix][1] - 70 if self.faces[ix][1] - 70 > 15 else self.faces[ix][3] + 70
