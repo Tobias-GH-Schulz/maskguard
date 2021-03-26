@@ -7,8 +7,8 @@ import time
 import cv2
 
 #defining prototext and caffemodel paths
-caffeModel = "/Users/tobiasschulz/Documents/GitHub/mask-detector/face_detector_ssd/face_detector_model/res10_300x300_ssd_iter_140000.caffemodel"
-prototextPath = "/Users/tobiasschulz/Documents/GitHub/mask-detector/face_detector_ssd/face_detector_model/deploy.prototxt"
+caffeModel = "/Users/tobiasschulz/Documents/GitHub/mask-detector/face_detector_ssd/face_detector_model/face_model/res10_300x300_ssd_iter_140000.caffemodel"
+prototextPath = "/Users/tobiasschulz/Documents/GitHub/mask-detector/face_detector_ssd/face_detector_model/face_model/deploy.prototxt"
 
 #Load Model
 print("Loading model...................")
@@ -28,7 +28,7 @@ while(video.isOpened()):
             frame_no += 1
 
             #Get the frams from the video stream and resize to 400 px
-            frame = imutils.resize(frame,width=400)
+            #frame = imutils.resize(frame,width=400)
 
             # extract the dimensions , Resize image into 300x300 and converting image into blobFromImage
             (h, w) = frame.shape[:2]

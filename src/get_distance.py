@@ -12,10 +12,10 @@ class Distance:
         
         for i in range(0, len(face_boxes)):
             (startX, startY, endX, endY) = face_boxes[i]
-            startX += 15
-            startY += 15
-            endX -= 15
-            endY -= 15
+            startX += 35
+            startY += 35
+            endX -= 35
+            endY -= 35
 
             # Mid point of bounding box
             x_mid = round((startX+endX)/2,4)
