@@ -1,24 +1,31 @@
 from playsound import playsound
 import datetime
+import threading
+import numpy as np
 
 class MaskWarning:
-    def __init__(self, start_time, end_time):
-        self.start_time = start_time
-        self.end_time = end_time
+    def __init__(self, cooldown = 5):
+        self.cooldown = cooldown
+        self.thanked = True
+        self.timestamp = 0
+        self.prober = []
+        self.maskOn = True
 
-    def play_sound(self, state):
-        difference = int((self.start_time - self.end_time).total_seconds())  
-        if difference > 10:
-            if state == "mask":
-                playsound('./utility/thanks_wear_mask.mp3')
-                print("face detected")
-            else:
-                playsound('./utility/please_wear_mask.mp3')
-                print("no face detected")
+    def probe(self, isMaskOff):
+        self.prober.append(isMaskOff)
+        if len(self.prober) > 60:
+            self.play_with_cooldown(round(np.mean(self.prober)))
 
-            new_end_time = datetime.datetime.now()
-            return new_end_time
-        else:
-            return self.end_time
-
-        
+    def play_with_cooldown(self, maskOff):
+        self.prober.clear()
+        time = datetime.datetime.now().timestamp()
+        if time - self.timestamp > self.cooldown:
+            if not self.thanked and maskOff == False:
+                #threading.Thread(target=playsound, args=('./utility/thanks_wear_mask.mp3',), daemon=True).start()
+                threading.Thread(target=print, args=('THANK YOU',), daemon=True).start()
+                self.thanked = True
+            elif maskOff == True:
+                #threading.Thread(target=playsound, args=('./utility/please_wear_mask.mp3',), daemon=True).start()
+                threading.Thread(target=print, args=('WEAR A MASK!',), daemon=True).start()
+                self.timestamp = time
+                self.thanked = False
