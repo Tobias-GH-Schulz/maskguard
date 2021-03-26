@@ -34,11 +34,12 @@ st.markdown(
 )
 
 #Title
-st.title('Mask Detector')
+st.title('Mask-NoMask-Detector')
+st.image('/Users/aderemifayoyiwa/Downloads/face_mask.jpeg')
 
 #Creating sidebar
-expander = st.sidebar.beta_expander('Ready to check our model?')
-expander.write('All you need is a device with camera')
+expander = st.sidebar.beta_expander('Impressed and interested?')
+expander.write("Contact M.A.T and let's make your business a safer place")
 
 expander = st.sidebar.beta_expander('The team')
 expander.write('Marcin Szleszynski')
@@ -48,28 +49,50 @@ expander.write('Tobias Schulz')
 
 #Creating expanders for different sections
 st.markdown('## **Introduction**')
-st.write("In this present time, it is important to consider one's own \nsafety and the safety of others by wearing a face mask. \nOur model is trained not only to detect if people wear masks \nbut also if they wear them correctly.")
+st.write("In this present time, it is important to consider one's own \nsafety and the safety of others by wearing a face mask. \nCorona virus is still spreading and causing a lot of \nfinancial problems and health issues.")
+st.markdown("\n * an estimate of 26 perecent of SMBs have been closed down by the authorities during the pandemic.")
+st.markdown('\n * In order to help keep SMBs afloat, we at M.A.T invented the MNMD, a Mask-NoMask Detector that detects if your customers are wearing masks or not and only lets them enter your business if they are wearing one')
+st.markdown('\n * Our highly educated team put all their knowledge in deep learning and computer vision together to create a tool that gives you one less thing to worry about in this trying times')
 
 st.markdown('## **Technologies**')
 expander = st.beta_expander('Technologies used')
-expander.write('Github')
-expander.write('Streamlit')
-expander.write('Pytorch')
+expander.write('- Pytorch')
+expander.write('- OpenCV')
+expander.write('- Github')
+expander.write('- Streamlit')
 
 st.markdown('## **Model training**')
 expander = st.beta_expander('Model')
-expander.write('Method: mobilenetV2')
+expander.write('Method1: Transfer learning (MobileNetV2)')
+expander.write('Method2: Computer vision')
 
-st.markdown('## **Model functions**')
-expander = st.beta_expander('Functions')
-expander.markdown('\n * Detect face \n * Check for mask \n * Give warning if need be')
-
-st.markdown('## **Data collection and analysis**')
+st.markdown('## **Dataset**')
 expander = st.beta_expander('Data')
-expander.write('Source: ')
+expander.write('Source: Custom dataset from Strive School and Chinese dataset')
+expander.write('Training: 2348')
+expander.write('Validation: 784')
+expander.write('Test: 784')
+
+st.markdown('## **Application features**')
+expander = st.beta_expander('Features')
+expander.write('- EFD (enhanced face detection)')
+expander.write('- The MNMD uses a unique two stage multidetector to detect faces in the image:')
+expander.markdown('\n * - Single Shot Multibox Detector (SSD) based on a pretrained RESNET10 which directly detects faces \n * - if the first SSD fails to detect a face the second stage gets activated and tries to detect persons using a pre-trained MOBILENET if a person is detected the area of the person gets cropped from the image and is then passed to the first stage SSD')
+expander.write('- Well trained Mask-NoMask Classifier')
+expander.write('- Brightness optimizer')
+expander.write('- Safe distance Measurement')
+expander.write('- Customizable alarm system ')
+
+
+st.markdown('## **What next?**')
+expander = st.beta_expander('Proposed adjustments')
+expander.write('- Motion detector to optimize the face detection')
+expander.write('- Enhance the alarm system')
+expander.write('- Further brightness and image optimization')
+
 
 st.markdown('## **Model demo**')
-st.markdown('### **Displayed distance might differ**')
+st.markdown('**Please note that displayed distance might differ**')
 left_column, right_column = st.beta_columns(2)
 pressed = left_column.button('Click for demo')
 if pressed:
@@ -95,13 +118,6 @@ age_gender_detector = AgeGenderDetector(ageProto, ageModel,
 person_detector = PersonDetector(personProto, personModel)
 BODY_CONFID_THRESH = 0.5
 face_mask_classifier = FaceMaskClassifier(maskModel)
-# initialize distance measurement
-#'''
-#FOCAL = (P x  D) / W
-#P = height of reference object on picture in pixels
-#D = distance of reference object to camera when photo was taken in cm
-#W = actual heigt of reference object 
-#'''
 
 DIST_REF = 22
 FOCAL = int((309 *  100) / DIST_REF)
@@ -156,21 +172,11 @@ while run:
             annotater.dist_measure.append(dist.measure(annotater.faces))
             frame = annotater.update()
 
-        '''
-        # play warning
-        if len(face_crops) > 0:
-            state = "mask"
-        else:
-            state = "no mask"
-        start_time = datetime.datetime.now()
-        warn = MaskWarning(start_time, end_time)
-        end_time= warn.play_sound(state)
-        '''
+       
 
         # show the output frame
         FRAME_WINDOW.image(frame)
-        #cv2.imshow("Frame", frame)
-        #cv2.resizeWindow('Frame',800,800)
+
         key = cv2.waitKey(1) & 0xFF
         del annotater
         # if the `q` key was pressed, break from the loop
@@ -178,9 +184,9 @@ while run:
             break
     else:
         break
-st.markdown('**_Impressed? I bet!_**')
+st.markdown('**_Impressed? We bet!_**')
 
 # do a bit of cleanup
-video.release()
-cv2.destroyAllWindows()
-cv2.waitKey(1)
+#video.release()
+#cv2.destroyAllWindows()
+#cv2.waitKey(1)
