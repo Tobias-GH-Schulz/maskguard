@@ -56,6 +56,7 @@ frame_no = 0
 print("[INFO] starting video stream...")
 video = cv2.VideoCapture(0)
 time.sleep(2.0)
+soundOn = True
 
 def cropout(img, box):
     return img[box[1]:box[3], box[0]:box[2]]
@@ -91,7 +92,8 @@ while(video.isOpened()):
             annotater.dist_measure.append(dist.measure(annotater.faces))
             frame = annotater.update()
 
-            warn.probe(bool("no_mask" in annotater.mask_statuses))
+            if soundOn:
+                warn.probe(bool("no_mask" in annotater.mask_statuses))
             # show the output frame
         cv2.imshow("Frame", frame)
         cv2.resizeWindow('Frame',800,800)
@@ -100,6 +102,8 @@ while(video.isOpened()):
         # if the `q` key was pressed, break from the loop
         if key == ord("q"):
             break
+        if key == ord("s"):
+            soundOn = not soundOn
     else:
         break
 
