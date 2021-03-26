@@ -18,9 +18,11 @@ class Annotater():
         box(array) - coordinates to be adjusted
         ref(array) - reference coordinates
         '''
-
-        return (ref[0] + box[0], ref[1] + box[1], ref[2] - box[2], ref[3] - box[3])
-
+        x = ref[0] + box[0]
+        y = ref[1] + box[1]
+        x2 = x + box[2]
+        y2 = y + box[3]
+        return (x, y, x2, y2)
 
     def update(self):
         for face in self.faces:

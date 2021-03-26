@@ -52,6 +52,10 @@ class PersonDetector:
                                                             self.w, 
                                                             self.h])
                 (startX, startY, endX, endY) = box.astype("int")
+                startX = max(0, startX - 15)
+                startY = max(0, startY - 15)
+                endX += 15
+                endY += 15
 
                 confidence.append(confid_all)
                 person_boxes.append((startX, startY, endX, endY))

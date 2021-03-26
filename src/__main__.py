@@ -23,11 +23,11 @@ maskModel = "models/mask_model/mnv2_mask_classifier_v1.pth"
 
 # initialize detectors
 face_detector = FaceDetector(faceProto, faceModel)
-FACE_CONFID_THRESH = 0.6
+FACE_CONFID_THRESH = 0.5
 age_gender_detector = AgeGenderDetector(ageProto, ageModel,
                                         genderProto, genderModel)
 person_detector = PersonDetector(personProto, personModel)
-BODY_CONFID_THRESH = 0.9
+BODY_CONFID_THRESH = 0.5
 face_mask_classifier = FaceMaskClassifier(maskModel)
 # initialize distance measurement
 FOCAL = 290

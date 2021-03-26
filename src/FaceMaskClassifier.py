@@ -21,6 +21,7 @@ class FaceMaskClassifier():
     def __preprocess(self, img):
         if not isinstance(img, Image.Image):
             input_image = Image.fromarray(img)
+
         input_tensor = self.transformations(input_image)
         input_batch = input_tensor.unsqueeze(0) # create a mini-batch as expected by the model
         return input_batch

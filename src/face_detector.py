@@ -51,6 +51,10 @@ class FaceDetector:
                                                        self.w,
                                                        self.h])
             (startX, startY, endX, endY) = box.astype("int")
+            startX = max(0, startX - 35)
+            startY = max(0, startY - 35)
+            endX += 35
+            endY += 35
             if single:
                return (startX, startY, endX, endY), confid
             confidence.append(confid)
