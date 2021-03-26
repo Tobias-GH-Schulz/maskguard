@@ -11,6 +11,7 @@ from age_gender_detector import *
 from person_detector import *
 from MaskWarning import *
 from FaceMaskClassifier import FaceMaskClassifier
+from Brightness_optimizer import BrightnessOptimizer
 import os
 os.environ['KMP_DUPLICATE_LIB_OK']='True'
 
@@ -26,6 +27,7 @@ personModel = "models/person_model/mobilenet.caffemodel"
 maskModel = "models/mask_model/mnv2_mask_classifier_v4.pth"
 
 warn = MaskWarning(cooldown=5)
+brightOpt = BrightnessOptimizer()
 # initialize detectors
 face_detector = FaceDetector(faceProto, faceModel)
 FACE_CONFID_THRESH = 0.3
@@ -60,18 +62,20 @@ def cropout(img, box):
 
 while(video.isOpened()):
     check, frame = video.read()
+    frameOpt = frame
+    #frameOpt = brightOpt.optimize(frame)
     if frame is not None:
         annotater = Annotater(frame)
         face_crops = []
-        face_boxes, _ = face_detector.detect(frame, FACE_CONFID_THRESH)
+        face_boxes, _ = face_detector.detect(frameOpt, FACE_CONFID_THRESH)
         if len(face_boxes):
             annotater.faces += face_boxes
-            face_crops = [cropout(frame, face_box) for face_box in face_boxes]
+            face_crops = [cropout(frameOpt, face_box) for face_box in face_boxes]
         else:
-            body_boxes, _ = person_detector.detect(frame, BODY_CONFID_THRESH)
+            body_boxes, _ = person_detector.detect(frameOpt, BODY_CONFID_THRESH)
             if len(body_boxes) != 0:
                 annotater.bodies += body_boxes
-                body_crops = [cropout(frame, body_box) for body_box in body_boxes]
+                body_crops = [cropout(frameOpt, body_box) for body_box in body_boxes]
 
                 for body_crop, body_box in zip(body_crops, body_boxes):
                     face_box, _ = face_detector.detect(body_crop, FACE_CONFID_THRESH, single=True)
