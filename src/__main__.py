@@ -88,8 +88,7 @@ while(video.isOpened()):
             frame = annotater.update()
 
             warn.probe(bool("no_mask" in annotater.mask_statuses))
-
-        # show the output frame
+            # show the output frame
         cv2.imshow("Frame", frame)
         cv2.resizeWindow('Frame',800,800)
         key = cv2.waitKey(1) & 0xFF
