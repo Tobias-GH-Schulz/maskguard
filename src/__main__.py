@@ -80,7 +80,7 @@ while(video.isOpened()):
             pos_dict, close_objects = dist.measure(annotater.faces)
             frame = annotater.update()
 
-        
+        '''
         # play warning
         if len(face_crops) > 0:
             state = "mask"
@@ -89,7 +89,7 @@ while(video.isOpened()):
         start_time = datetime.datetime.now()
         warn = MaskWarning(start_time, end_time)
         end_time= warn.play_sound(state)
-        
+        '''
 
         # show the output frame
         cv2.imshow("Frame", frame)

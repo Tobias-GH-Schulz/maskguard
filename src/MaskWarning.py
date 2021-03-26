@@ -8,7 +8,6 @@ class MaskWarning:
 
     def play_sound(self, state):
         difference = int((self.start_time - self.end_time).total_seconds())  
-        print("time difference: ", difference)
         if difference > 10:
             if state == "mask":
                 playsound('./utility/thanks_wear_mask.mp3')
