@@ -17,8 +17,9 @@ class Mask:
         
         binary_mask = cv2.threshold(difference, 0, 1, cv2.THRESH_BINARY+
                                                         cv2.THRESH_OTSU)[1]
-        kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (10, 10))
-        dilation = cv2.dilate(binary_mask, kernel, 5)
+        #kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (10, 10))
+        kernel = cv2.getStructuringElement(cv2.MORPH_CROSS, (3,3))
+        dilation = cv2.erode(binary_mask, kernel, 5)
         masked_frame = cv2.bitwise_and(self.frame_copy, self.frame_copy, mask=dilation)
 
         return masked_frame

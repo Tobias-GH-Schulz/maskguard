@@ -8,6 +8,7 @@ from face_detector import *
 from get_distance import *
 from age_gender_detector import *
 from person_detector import *
+from MaskWarning import *
 from FaceMaskClassifier import FaceMaskClassifier
 
 # set model paths
@@ -33,6 +34,9 @@ face_mask_classifier = FaceMaskClassifier(maskModel)
 FOCAL = 290
 DIST_REF = 22
 dist = Distance(FOCAL, DIST_REF)
+
+# initialize ent_time for audio_warning
+end_time = datetime.datetime.now()
 
 # initialize the video stream to get the live video frames
 frame_no = 0
@@ -74,6 +78,17 @@ while(video.isOpened()):
 
             pos_dict, close_objects = dist.measure(annotater.faces)
             frame = annotater.update()
+
+        
+        # play warning
+        if len(face_crops) > 0:
+            state = "mask"
+        else:
+            state = "no mask"
+        start_time = datetime.datetime.now()
+        warn = MaskWarning(start_time, end_time)
+        end_time= warn.play_sound(state)
+        
 
         # show the output frame
         cv2.imshow("Frame", frame)

@@ -11,10 +11,10 @@ class MaskWarning:
         print("time difference: ", difference)
         if difference > 10:
             if state == "mask":
-                playsound('./audio/thanks_wear_mask.mp3')
+                playsound('./utility/thanks_wear_mask.mp3')
                 print("face detected")
             else:
-                playsound('./audio/please_wear_mask.mp3')
+                playsound('./utility/please_wear_mask.mp3')
                 print("no face detected")
 
             new_end_time = datetime.datetime.now()
