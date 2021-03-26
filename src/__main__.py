@@ -103,6 +103,7 @@ while(video.isOpened()):
         if key == ord("q"):
             break
         if key == ord("s"):
+            print("Sound:", soundOn)
             soundOn = not soundOn
     else:
         break
