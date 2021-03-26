@@ -76,6 +76,7 @@ while(video.isOpened()):
         frame_dist = annotate_distance(frame, face_boxes, pos_dict, close_objects)
         #frame_age = annotate_age_gender(frame_dist, face_boxes, age, gender)
         
+        '''
         # play warning
         if len(face_boxes) > 0:
             state = "mask"
@@ -84,7 +85,7 @@ while(video.isOpened()):
         start_time = datetime.datetime.now()
         warn = MaskWarning(start_time, end_time)
         end_time= warn.play_sound(state)
-
+        '''
 
         # show the output frame
         cv2.imshow("Frame", frame)

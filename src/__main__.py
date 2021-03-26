@@ -11,6 +11,8 @@ from age_gender_detector import *
 from person_detector import *
 from MaskWarning import *
 from FaceMaskClassifier import FaceMaskClassifier
+import os
+os.environ['KMP_DUPLICATE_LIB_OK']='True'
 
 # set model paths
 faceModel = "models/face_model/res10_300x300_ssd_iter_140000.caffemodel"
@@ -21,11 +23,11 @@ ageProto = "models/age_model/age_deploy.prototxt"
 ageModel = "models/age_model/age_net.caffemodel"
 personProto = "models/person_model/mobilenet.prototxt"
 personModel = "models/person_model/mobilenet.caffemodel"
-maskModel = "models/mask_model/mnv2_mask_classifier_v1.pth"
+maskModel = "models/mask_model/mnv2_mask_classifier_v3.pth"
 
 # initialize detectors
 face_detector = FaceDetector(faceProto, faceModel)
-FACE_CONFID_THRESH = 0.5
+FACE_CONFID_THRESH = 0.3
 age_gender_detector = AgeGenderDetector(ageProto, ageModel,
                                         genderProto, genderModel)
 person_detector = PersonDetector(personProto, personModel)
