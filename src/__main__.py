@@ -56,7 +56,7 @@ frame_no = 0
 print("[INFO] starting video stream...")
 video = cv2.VideoCapture(0)
 time.sleep(2.0)
-soundOn = True
+soundOn = False
 
 def cropout(img, box):
     return img[box[1]:box[3], box[0]:box[2]]
