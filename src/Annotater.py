@@ -27,7 +27,6 @@ class Annotater():
 
     def update(self):
         pos_dic, close_objects = self.dist_measure[0]
-        print(pos_dic)
         for index, face in enumerate(self.faces):
             if index in close_objects:
                 COLOR = [0,0,255]
