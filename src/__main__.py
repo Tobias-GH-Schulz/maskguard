@@ -34,7 +34,13 @@ person_detector = PersonDetector(personProto, personModel)
 BODY_CONFID_THRESH = 0.5
 face_mask_classifier = FaceMaskClassifier(maskModel)
 # initialize distance measurement
-#FOCAL = (P x  D) / W
+'''
+FOCAL = (P x  D) / W
+P = height of reference object on picture in pixels
+D = distance of reference object to camera when photo was taken in cm
+W = actual heigt of reference object 
+'''
+
 DIST_REF = 22
 FOCAL = int((309 *  100) / DIST_REF)
 dist = Distance(FOCAL, DIST_REF)
