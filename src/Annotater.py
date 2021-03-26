@@ -21,7 +21,7 @@ class Annotater():
         '''
         x = ref[0] + box[0]
         y = ref[1] + box[1]
-        x2 = x + box[2]
+        x2 = x + box[3]
         y2 = y + box[3]
         return (x, y, x2, y2)
 
