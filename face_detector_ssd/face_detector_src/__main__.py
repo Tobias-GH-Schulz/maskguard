@@ -2,6 +2,7 @@ import cv2
 import numpy as np
 import imutils
 import time
+import datetime
 from imutils.video import VideoStream
 from face_detector import *
 from get_distance import *
@@ -11,6 +12,7 @@ from person_detector import *
 from cap_background import *
 from person_mask import *
 from Brightness_optimizer import *
+from warning import *
 
 # set model paths
 personModel = "../face_detector_model/person_model/mobilenet.caffemodel"
@@ -37,8 +39,11 @@ backgroundFrame = Background().capture(capture_duration = 2)
 # keep person out of video for the first video shot
 mask = Mask(backgroundFrame)
 
+# initialize ent_time for audio_warning
+end_time = datetime.datetime.now()
+
 # initialize the video stream to get the live video frames
-frame_no = 0
+
 print("[INFO] starting video stream...")
 video = cv2.VideoCapture(0)
 time.sleep(2.0)
@@ -46,7 +51,6 @@ time.sleep(2.0)
 while(video.isOpened()):
     check, frame = video.read()
     if frame is not None:
-        frame_no += 1
 
         #Get the frame from the video stream and resize to 400 px
         frame = imutils.resize(frame,width=400)
@@ -72,6 +76,16 @@ while(video.isOpened()):
         frame_dist = annotate_distance(frame, face_boxes, pos_dict, close_objects)
         #frame_age = annotate_age_gender(frame_dist, face_boxes, age, gender)
         
+        # play warning
+        if len(face_boxes) > 0:
+            state = "mask"
+        else:
+            state = "no mask"
+        start_time = datetime.datetime.now()
+        warn = MaskWarning(start_time, end_time)
+        end_time= warn.play_sound(state)
+
+
         # show the output frame
         cv2.imshow("Frame", frame)
         cv2.imshow("Frame optimized", frame_optimized)
