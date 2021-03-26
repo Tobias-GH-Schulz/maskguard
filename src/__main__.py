@@ -34,8 +34,9 @@ person_detector = PersonDetector(personProto, personModel)
 BODY_CONFID_THRESH = 0.5
 face_mask_classifier = FaceMaskClassifier(maskModel)
 # initialize distance measurement
-FOCAL = 290
+#FOCAL = (P x  D) / W
 DIST_REF = 22
+FOCAL = int((309 *  100) / DIST_REF)
 dist = Distance(FOCAL, DIST_REF)
 
 # initialize ent_time for audio_warning
@@ -79,7 +80,7 @@ while(video.isOpened()):
                 #age, gender =
                 annotater.mask_statuses.append(face_mask_classifier.predict(face_crop))
 
-            pos_dict, close_objects = dist.measure(annotater.faces)
+            annotater.dist_measure.append(dist.measure(annotater.faces))
             frame = annotater.update()
 
         '''

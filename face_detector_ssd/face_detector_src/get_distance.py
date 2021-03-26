@@ -9,6 +9,7 @@ class Distance:
     def measure(self, face_boxes):
         # initialize dict for object positions
         pos_dict = dict()
+        position = []
         
         for i in range(0, len(face_boxes)):
             (startX, startY, endX, endY) = face_boxes[i]
@@ -31,6 +32,7 @@ class Distance:
             x_mid_cm = (x_mid * distance) / self.focal
             y_mid_cm = (y_mid * distance) / self.focal
             pos_dict[i] = (x_mid_cm,y_mid_cm,distance)
+            position = (x_mid_cm,y_mid_cm,distance)
 
         if pos_dict is not None:
             # Distance between every object detected in a frame
@@ -47,6 +49,6 @@ class Distance:
                         if dist < 100:
                             close_objects.add(i)
                             close_objects.add(j)
-
+        print(pos_dict, close_objects)
         return pos_dict, close_objects
 
