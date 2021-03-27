@@ -19,23 +19,23 @@ import os
 os.environ['KMP_DUPLICATE_LIB_OK']='True'
 
 #Background
-main_bg = '/Users/aderemifayoyiwa/Downloads/back.jpg'
-main_bg_ext = 'jpg'
+#main_bg = '/Users/aderemifayoyiwa/Downloads/back.jpg'
+#main_bg_ext = 'jpg'
 
-st.markdown(
-    f"""
-    <style>
-    .reportview-container {{
-        background: url(data:image/{main_bg_ext};base64,{base64.b64encode(open(main_bg, "rb").read()).decode()})
-    }}
-    </style>
-    """,
-    unsafe_allow_html=True
-)
+#st.markdown(
+#    f"""
+#    <style>
+#    .reportview-container {{
+#        background: url(data:image/{main_bg_ext};base64,{base64.b64encode(open(main_bg, "rb").read()).decode()})
+#    }}
+#    </style>
+#    """,
+#    unsafe_allow_html=True
+#)
 
 #Title
 st.title('Mask-NoMask-Detector')
-st.image('/Users/aderemifayoyiwa/Downloads/face_mask.jpeg')
+#st.image('/Users/aderemifayoyiwa/Downloads/face_mask.jpeg')
 
 #Creating sidebar
 expander = st.sidebar.beta_expander('Impressed and interested?')
@@ -133,7 +133,6 @@ video = cv2.VideoCapture(0)
 time.sleep(2.0)
 
 def cropout(img, box):
-    print("BOX", box)
     return img[box[1]:box[3], box[0]:box[2]]
 
 #Setting video feed
