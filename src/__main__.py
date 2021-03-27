@@ -5,13 +5,13 @@ import datetime
 import time
 from imutils.video import VideoStream
 from Annotater import Annotater
-from face_detector import *
-from get_distance import *
-from age_gender_detector import *
-from person_detector import *
+from FaceDetector import *
+from GetDistance import *
+from AgeGenderDetector import *
+from PersonDetector import *
 from MaskWarning import *
 from FaceMaskClassifier import FaceMaskClassifier
-from Brightness_optimizer import BrightnessOptimizer
+from BrightnessOptimizer import BrightnessOptimizer
 import os
 os.environ['KMP_DUPLICATE_LIB_OK']='True'
 
