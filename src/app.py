@@ -13,7 +13,7 @@ from FaceDetector import *
 from GetDistance import *
 from AgeGenderDetector import *
 from PersonDetector import *
-from MaskWarning import *
+#from MaskWarning import *
 from FaceMaskClassifier import FaceMaskClassifier
 import os
 os.environ['KMP_DUPLICATE_LIB_OK']='True'
