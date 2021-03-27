@@ -43,8 +43,6 @@ class PersonDetector:
             class_all = detections[0, 0, i, 1]
             # filter detections by confidence greater than the minimum
             if class_all == self.class_num and confid_all>=confidThresh:
-            #if confid_all>=confidThresh:
-
                 # compute the (x, y)-coordinates of the bounding box for the
                 # object
                 box = detections[0, 0, i, 3:7] * np.array([self.w, 

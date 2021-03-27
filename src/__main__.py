@@ -10,8 +10,10 @@ from GetDistance import *
 from AgeGenderDetector import *
 from PersonDetector import *
 from MaskWarning import *
+from MotionDetector import *
 from FaceMaskClassifier import FaceMaskClassifier
 from BrightnessOptimizer import BrightnessOptimizer
+
 import os
 os.environ['KMP_DUPLICATE_LIB_OK']='True'
 
@@ -36,6 +38,7 @@ age_gender_detector = AgeGenderDetector(ageProto, ageModel,
 person_detector = PersonDetector(personProto, personModel)
 BODY_CONFID_THRESH = 0.5
 face_mask_classifier = FaceMaskClassifier(maskModel)
+
 # initialize distance measurement
 '''
 FOCAL = (P x  D) / W
@@ -47,9 +50,6 @@ DIST_REF = 22
 FOCAL = int((309 *  100) / DIST_REF)
 dist = Distance(FOCAL, DIST_REF)
 
-# initialize ent_time for audio_warning
-end_time = datetime.datetime.now()
-
 # initialize the video stream to get the live video frames
 frame_no = 0
 print("[INFO] starting video stream...")
@@ -59,6 +59,9 @@ soundOn = False
 
 def cropout(img, box):
     return img[box[1]:box[3], box[0]:box[2]]
+
+# capture background for motion detector
+BACKGROUND = Motion.capture_background()
 
 while(video.isOpened()):
     check, frame = video.read()
@@ -72,7 +75,8 @@ while(video.isOpened()):
             annotater.faces += face_boxes
             face_crops = [cropout(frameOpt, face_box) for face_box in face_boxes]
         else:
-            body_boxes, _ = person_detector.detect(frameOpt, BODY_CONFID_THRESH)
+            body_boxes = Motion.detector(frameOpt, BACKGROUND)
+            #body_boxes, _ = person_detector.detect(frameOpt, BODY_CONFID_THRESH)
             if len(body_boxes) != 0:
                 annotater.bodies += body_boxes
                 body_crops = [cropout(frameOpt, body_box) for body_box in body_boxes]
