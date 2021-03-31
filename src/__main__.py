@@ -8,7 +8,7 @@ from Annotater import Annotater
 from FaceDetector import *
 from GetDistance import *
 from AgeGenderDetector import *
-from PersonDetector import *
+from BodyDetector import *
 from MaskWarning import *
 from MotionDetector import *
 from FaceMaskClassifier import FaceMaskClassifier
@@ -24,8 +24,8 @@ genderModel = "models/gender_model/gender_net.caffemodel"
 genderProto = "models/gender_model/gender_deploy.prototxt"
 ageProto = "models/age_model/age_deploy.prototxt"
 ageModel = "models/age_model/age_net.caffemodel"
-personProto = "models/person_model/mobilenet.prototxt"
-personModel = "models/person_model/mobilenet.caffemodel"
+bodyProto = "models/body_model/mobilenet.prototxt"
+bodyModel = "models/body_model/mobilenet.caffemodel"
 maskModel = "models/mask_model/mnv2_mask_classifier_v4.pth"
 
 warn = MaskWarning(cooldown=5)
@@ -35,7 +35,7 @@ face_detector = FaceDetector(faceProto, faceModel)
 FACE_CONFID_THRESH = 0.3
 age_gender_detector = AgeGenderDetector(ageProto, ageModel,
                                         genderProto, genderModel)
-person_detector = PersonDetector(personProto, personModel)
+body_detector = BodyDetector(bodyProto, bodyModel)
 BODY_CONFID_THRESH = 0.5
 face_mask_classifier = FaceMaskClassifier(maskModel)
 
@@ -76,7 +76,7 @@ while(video.isOpened()):
             face_crops = [cropout(frameOpt, face_box) for face_box in face_boxes]
         else:
             body_boxes = Motion.detector(frameOpt, BACKGROUND)
-            #body_boxes, _ = person_detector.detect(frameOpt, BODY_CONFID_THRESH)
+            #body_boxes, _ = body_detector.detect(frameOpt, BODY_CONFID_THRESH)
             if len(body_boxes) != 0:
                 annotater.bodies += body_boxes
                 body_crops = [cropout(frameOpt, body_box) for body_box in body_boxes]
