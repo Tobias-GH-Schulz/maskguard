@@ -34,10 +34,10 @@ focal = 290
 distRef = 22   
 dist = Distance(focal, distRef) 
 # capture background from first 30 frames
-backgroundFrame = Background().capture(capture_duration = 2)
+#backgroundFrame = Background().capture(capture_duration = 2)
 # initialize the background mask
 # keep person out of video for the first video shot
-mask = Mask(backgroundFrame)
+#mask = Mask(backgroundFrame)
 
 # initialize ent_time for audio_warning
 end_time = datetime.datetime.now()
@@ -58,13 +58,17 @@ while(video.isOpened()):
         
         # brightness optimizing
         frame_optimized = BrightnessOptimizer().optimize(frame)
+        #frame_agwcd = BrightnessOptimizer().image_agcwd(frame)
+        frame_a_g_c = BrightnessOptimizer().a_g_c(frame)
+        (Im,th,th1,cls,g,RGB) = BrightnessOptimizer().ContrastStretching(frame)
+        streched_contrast = BrightnessOptimizer().ContrastStretching2(frame, 60)
         
         # masking
-        masked_frame = mask.create(frame_copy, 11)
+        #masked_frame = mask.create(frame_copy, 11)
 
-        person_boxes, person_confidence = person_detector.detect(masked_frame, 0.95)
+        person_boxes, person_confidence = person_detector.detect(frame, 0.95)
         # get coordinates and confidence for each detected face
-        face_boxes, face_confidence = face_detector.detect(frame, 0.5) 
+        face_boxes, face_confidence = face_detector.detect(frame, 0.3) 
         # get distance to cam and close objects 
         pos_dict, close_objects = dist.measure(face_boxes)
         # get age and gender
@@ -90,7 +94,12 @@ while(video.isOpened()):
         # show the output frame
         cv2.imshow("Frame", frame)
         cv2.imshow("Frame optimized", frame_optimized)
-        cv2.imshow("Masked Back", masked_frame)
+        #cv2.imshow("Frame agwcd", frame_agwcd)
+        cv2.imshow("Frame a_g_c", frame_a_g_c)
+        cv2.imshow("Frame Im", Im)
+        cv2.imshow("Frame Strechted2", Im)
+
+        #cv2.imshow("Masked Back", masked_frame)
         cv2.resizeWindow('Frame',800,800)
         key = cv2.waitKey(1) & 0xFF
 
