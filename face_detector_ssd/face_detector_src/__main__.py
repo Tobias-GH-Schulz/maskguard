@@ -13,6 +13,7 @@ from cap_background import *
 from person_mask import *
 from Brightness_optimizer import *
 from warning import *
+from MotionDetector import *
 
 # set model paths
 personModel = "../face_detector_model/person_model/mobilenet.caffemodel"
@@ -34,13 +35,13 @@ focal = 290
 distRef = 22   
 dist = Distance(focal, distRef) 
 # capture background from first 30 frames
-#backgroundFrame = Background().capture(capture_duration = 2)
+# backgroundFrame = Background().capture(capture_duration = 2)
 # initialize the background mask
 # keep person out of video for the first video shot
-#mask = Mask(backgroundFrame)
+# mask = Mask(backgroundFrame)
 
 # initialize ent_time for audio_warning
-end_time = datetime.datetime.now()
+#end_time = datetime.datetime.now()
 
 # initialize the video stream to get the live video frames
 
@@ -48,12 +49,14 @@ print("[INFO] starting video stream...")
 video = cv2.VideoCapture(0)
 time.sleep(2.0)
 
+BACKGROUND = Motion.capture_background()
+
 while(video.isOpened()):
     check, frame = video.read()
     if frame is not None:
 
         #Get the frame from the video stream and resize to 400 px
-        frame = imutils.resize(frame,width=400)
+        #frame = imutils.resize(frame,width=400)
         frame_copy = frame.copy()
         
         # brightness optimizing
@@ -61,12 +64,12 @@ while(video.isOpened()):
         #frame_agwcd = BrightnessOptimizer().image_agcwd(frame)
         frame_a_g_c = BrightnessOptimizer().a_g_c(frame)
         (Im,th,th1,cls,g,RGB) = BrightnessOptimizer().ContrastStretching(frame)
-        streched_contrast = BrightnessOptimizer().ContrastStretching2(frame, 60)
+        #streched_contrast = BrightnessOptimizer().ContrastStretching2(frame, 60)
         
         # masking
         #masked_frame = mask.create(frame_copy, 11)
-
-        person_boxes, person_confidence = person_detector.detect(frame, 0.95)
+        body_boxes, thresh_frame = Motion.detector(frame_optimized, BACKGROUND)
+        #person_boxes, person_confidence = person_detector.detect(frame, 0.95)
         # get coordinates and confidence for each detected face
         face_boxes, face_confidence = face_detector.detect(frame, 0.3) 
         # get distance to cam and close objects 
@@ -75,9 +78,10 @@ while(video.isOpened()):
         #age, gender = age_gender_detector(face)
         
         # annotations
-        frame_person = annotate_heads(frame, person_boxes, person_confidence)
+        frame_body = annotate_body(frame, body_boxes)
+        #frame_person = annotate_heads(frame, person_boxes, person_confidence)
         frame_head = annotate_heads(frame, face_boxes, face_confidence)
-        frame_dist = annotate_distance(frame, face_boxes, pos_dict, close_objects)
+        #frame_dist = annotate_distance(frame, face_boxes, pos_dict, close_objects)
         #frame_age = annotate_age_gender(frame_dist, face_boxes, age, gender)
         
         '''
@@ -92,12 +96,13 @@ while(video.isOpened()):
         '''
 
         # show the output frame
+        cv2.imshow("Frame", thresh_frame)
         cv2.imshow("Frame", frame)
-        cv2.imshow("Frame optimized", frame_optimized)
+        #cv2.imshow("Frame optimized", frame_optimized)
         #cv2.imshow("Frame agwcd", frame_agwcd)
-        cv2.imshow("Frame a_g_c", frame_a_g_c)
-        cv2.imshow("Frame Im", Im)
-        cv2.imshow("Frame Strechted2", Im)
+        #cv2.imshow("Frame a_g_c", frame_a_g_c)
+        #cv2.imshow("Frame Im", Im)
+        #cv2.imshow("Frame Strechted2", Im)
 
         #cv2.imshow("Masked Back", masked_frame)
         cv2.resizeWindow('Frame',800,800)
