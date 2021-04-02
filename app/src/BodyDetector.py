@@ -52,13 +52,14 @@ class BodyDetector:
                 (startX, startY, endX, endY) = box.astype("int")
                 startX = max(0, startX - 15)
                 startY = max(0, startY - 15)
-                endX += 15
-                endY += 15
+                endX = min(self.w, endX + 15)
+                endY = min(self.h, endX + 15)
 
                 confidence.append(confid_all)
                 body_boxes.append((startX, startY, endX, endY))
             else:
                 break
+
         if len(body_boxes) > 1:
             body_boxes = tuple(body_boxes)
             confidence = tuple(confidence)
