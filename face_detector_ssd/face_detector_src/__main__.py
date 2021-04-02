@@ -68,7 +68,7 @@ while(video.isOpened()):
         
         # masking
         #masked_frame = mask.create(frame_copy, 11)
-        body_boxes, thresh_frame = Motion.detector(frame_optimized, BACKGROUND)
+        body_boxes, dil_frame, opened_frame, thresh_frame, diff_frame = Motion.detector(frame, BACKGROUND)
         #person_boxes, person_confidence = person_detector.detect(frame, 0.95)
         # get coordinates and confidence for each detected face
         face_boxes, face_confidence = face_detector.detect(frame, 0.3) 
@@ -78,7 +78,6 @@ while(video.isOpened()):
         #age, gender = age_gender_detector(face)
         
         # annotations
-        frame_body = annotate_body(frame, body_boxes)
         #frame_person = annotate_heads(frame, person_boxes, person_confidence)
         frame_head = annotate_heads(frame, face_boxes, face_confidence)
         #frame_dist = annotate_distance(frame, face_boxes, pos_dict, close_objects)
@@ -96,7 +95,11 @@ while(video.isOpened()):
         '''
 
         # show the output frame
-        cv2.imshow("Frame", thresh_frame)
+        cv2.imshow("BACKGROUND", BACKGROUND)
+        cv2.imshow("Dilated frame", dil_frame)
+        cv2.imshow("Opened frame", opened_frame)
+        cv2.imshow("Thresholded frame", thresh_frame)
+        cv2.imshow("Differenced frame", diff_frame)
         cv2.imshow("Frame", frame)
         #cv2.imshow("Frame optimized", frame_optimized)
         #cv2.imshow("Frame agwcd", frame_agwcd)
@@ -105,7 +108,9 @@ while(video.isOpened()):
         #cv2.imshow("Frame Strechted2", Im)
 
         #cv2.imshow("Masked Back", masked_frame)
-        cv2.resizeWindow('Frame',800,800)
+        cv2.resizeWindow('Frame',300,300)
+        cv2.resizeWindow('BACKGROUND',300,300)
+        cv2.resizeWindow('Dilated frame',300,300)
         key = cv2.waitKey(1) & 0xFF
 
         # if the `q` key was pressed, break from the loop

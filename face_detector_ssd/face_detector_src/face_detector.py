@@ -28,9 +28,9 @@ class FaceDetector:
         self.proc = FrameProcessor()
         self.net = FaceModelLoader.load(faceProto, faceModel)
 
-    def detect(self, frame, body_boxes, confidThresh):
+    def detect(self, frame, confidThresh):
         (self.h, self.w) = frame.shape[:2]
-        blob = self.proc.get_blob(frame, body_boxes)
+        blob = self.proc.get_blob(frame)
         self.net.setInput(blob)
         detections = self.net.forward()
         # loop over the detections

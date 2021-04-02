@@ -26,12 +26,9 @@ class Motion:
         # Converting color image to gray_scale image
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         static_back_gray = cv2.cvtColor(static_back, cv2.COLOR_BGR2GRAY)
-        # Converting gray scale image to GaussianBlur 
-        # so that change can be find easily
-        gray_blur = cv2.GaussianBlur(gray, (21, 21), 0)
-
+        
         # Difference between static background and current frame
-        diff_frame = cv2.absdiff(static_back_gray, gray_blur)
+        diff_frame = cv2.absdiff(static_back_gray, gray)
 
         # If change in between static background and
         # current frame is greater than 50 it will show white color(255)
@@ -39,7 +36,7 @@ class Motion:
                         
         kernel = np.ones((5,5),np.uint8)
         opened_frame = cv2.morphologyEx(thresh_frame, cv2.MORPH_OPEN, kernel)
-        dil_frame = cv2.dilate(opened_frame, None, iterations = 5)
+        dil_frame = cv2.dilate(opened_frame, None, iterations = 30)
 
         # Finding contour of moving object
         cnts,_ = cv2.findContours(dil_frame.copy(), 
