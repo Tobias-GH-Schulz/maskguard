@@ -229,7 +229,7 @@ class StreamlitDesign():
                 st.markdown(" ")
             with team2:
                 st.markdown("[*Aderemi Fayoyiwa*](<https://github.com/AderemiF>)")
-                st.image("images/Team/aderemi.png",use_column_width=True)   
+                st.image("images/Team/Aderemi.png",use_column_width=True)   
                 st.markdown("[*Marcin Szleszynski*](<https://github.com/martinezpl>)")
                 st.image("images/Team/Marcin.png",use_column_width=True)            
                 st.markdown("[*Tobias Schulz*](<https://github.com/Tobias-GH-Schulz>)")
