@@ -3,6 +3,8 @@ import logging.handlers
 import queue
 import urllib.request
 from pathlib import Path
+import tempfile
+import base64
 #from typing import List, NamedTuple
 
 #try:
@@ -88,15 +90,94 @@ def main():
     StreamlitDesign().end()
 
 
-
 def app_video_upload():
     """ User video upload """
+    # TODO: delete existing mask_guard.avi
+    legal_extensions = ["avi", "mp4"]
+    uploaded_file = st.file_uploader(f"Upload a video. Mind that, the longer the video, the longer the processing time.", ["avi", "mp4"]) 
+    if uploaded_file:
+        st.write("Processing the video. It may take a few minutes.")
+        tfile = tempfile.NamedTemporaryFile(delete=False)
+        tfile.write(uploaded_file.read())
+        video = cv2.VideoCapture(tfile.name)
+        assembly = ModelAssembly()
+        # FOR RECORDING
+        width = int(video.get(cv2.CAP_PROP_FRAME_WIDTH) + 0.5)
+        height = int(video.get(cv2.CAP_PROP_FRAME_HEIGHT) + 0.5)
+        size = (width, height)
+        fourcc = cv2.VideoWriter_fourcc(*'XVID')
+        out = cv2.VideoWriter('mask_guard.avi', fourcc, 20.0, size)
+        rval, frame = video.read()
+        while rval:
+            rval, frame = video.read()
+            processed_frame = assembly.forwardFrame(frame)
+            out.write(processed_frame)
+        bin_file = 'mask_guard.avi' 
+        with open(bin_file, 'rb') as f:
+            data = f.read()
+        bin_str = base64.b64encode(data).decode()
+        href = f'<a href="data:application/octet-stream;base64,{bin_str}" download="{os.path.basename(bin_file)}">Download video</a>' 
+        
+        st.markdown(href, unsafe_allow_html=True)
+
+           
+    def create_player():
+        try:
+            return MediaPlayer("mask_guard.avi")
+        except:
+            pass
+
     webrtc_streamer(
-        key="loopback",
-        mode=WebRtcMode.SENDRECV,
+        key="media",
+        mode=WebRtcMode.RECVONLY,
         client_settings=WEBRTC_CLIENT_SETTINGS,
-        video_transformer_factory=None,  # NoOp
-    )
+        player_factory=create_player,
+    )  
+    
+class ModelAssembly():
+    def __init__(self) -> None:
+        self.face_detector = FaceDetector(FACE_PROTO, FACE_MODEL)
+        self.body_detector = BodyDetector(BODY_PROTO, BODY_MODEL)
+        self.face_mask_classifier = FaceMaskClassifier(MASK_MODEL)
+
+        self.DIST_REF = 22
+        self.FOCAL = int((309 *  100) / self.DIST_REF)
+        self.dist = Distance(self.FOCAL, self.DIST_REF)
+
+    def __cropout(self, img, box):
+        return img[box[1]:box[3], box[0]:box[2]]
+
+    def forwardFrame(self, frame): 
+        annotater = Annotater(frame)
+        face_crops = []
+        face_boxes, _ = self.face_detector.detect(frame, FACE_CONFID_THRESH)
+        if len(face_boxes):
+            annotater.faces += face_boxes
+            face_crops = [self.__cropout(frame, face_box) for face_box in face_boxes]
+        else:
+            body_boxes, _ = self.body_detector.detect(frame, BODY_CONFID_THRESH)
+            if len(body_boxes) > 0:
+                annotater.bodies += body_boxes
+                body_crops = [self.__cropout(frame, body_box) for body_box in body_boxes]
+                for body_crop, body_box in zip(body_crops, body_boxes):
+                    face_box, _ = self.face_detector.detect(body_crop, FACE_CONFID_THRESH, single=True)
+                    if len(face_box) > 0:
+                        face_crops.append(self.__cropout(body_crop, face_box))
+                        annotater.faces.append(annotater.recalc(face_box, body_box))
+
+        if len(face_crops) > 0:
+            for face_crop in face_crops:
+                annotater.mask_statuses.append(
+                        self.face_mask_classifier.predict(cv2.cvtColor(face_crop, cv2.COLOR_BGR2RGB))
+                        )
+
+            annotater.dist_measure.append(
+                    self.dist.measure(annotater.faces)
+                    )
+            frame = annotater.update()
+        
+        return frame 
+ 
 
 
 def app_mask_detection():
@@ -105,48 +186,13 @@ def app_mask_detection():
     class OpenCVVideoTransformer(VideoTransformerBase):
         #type: Literal("bla", "bla")
         def __init__(self) -> None:
-            self.face_detector = FaceDetector(FACE_PROTO, FACE_MODEL)
-            self.body_detector = BodyDetector(BODY_PROTO, BODY_MODEL)
-            self.face_mask_classifier = FaceMaskClassifier(MASK_MODEL)
-
-            self.DIST_REF = 22
-            self.FOCAL = int((309 *  100) / self.DIST_REF)
-            self.dist = Distance(self.FOCAL, self.DIST_REF)
-
-        def __cropout(self, img, box):
-            return img[box[1]:box[3], box[0]:box[2]]
+            self.assembly = ModelAssembly()    
 
         def transform(self, frame: av.VideoFrame) -> av.VideoFrame:
             img = frame.to_ndarray(format="bgr24") ## PIL ?
-            
-            annotater = Annotater(img)
-            #frame = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-            frame = img
-            face_crops = []
-            face_boxes, _ = self.face_detector.detect(frame, FACE_CONFID_THRESH)
-            if len(face_boxes):
-                annotater.faces += face_boxes
-                face_crops = [self.__cropout(frame, face_box) for face_box in face_boxes]
-            else:
-                body_boxes, _ = self.body_detector.detect(frame, BODY_CONFID_THRESH)
-                if len(body_boxes) != 0:
-                    annotater.bodies += body_boxes
-                    body_crops = [self.__cropout(frame, body_box) for body_box in body_boxes]
-                    for body_crop, body_box in zip(body_crops, body_boxes):
-                        face_box, _ = self.face_detector.detect(body_crop, FACE_CONFID_THRESH, single=True)
-                        if len(face_box) > 0:
-                            face_crops.append(self.__cropout(body_crop, face_box))
-                            annotater.faces.append(annotater.recalc(face_box, body_box))
+           
+            return self.assembly.forwardFrame(img)
 
-            if len(face_crops) != 0:
-                for face_crop in face_crops:
-                    annotater.mask_statuses.append(self.face_mask_classifier.predict(cv2.cvtColor(face_crop, cv2.COLOR_BGR2RGB)))
-
-                annotater.dist_measure.append(self.dist.measure(annotater.faces))
-                frame = annotater.update()
-            
-            return frame 
-            
     webrtc_ctx = webrtc_streamer(
         key="opencv-filter",
         mode=WebRtcMode.SENDRECV,
