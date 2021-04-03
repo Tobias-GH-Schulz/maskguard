@@ -196,7 +196,7 @@ class StreamlitDesign():
                 wear_bytes = wear_mask.read()
                 st.audio(wear_bytes, format='audio/mp3')
             with col3:
-                st.write("When all detected persons on the image are wearing a mask the MASK GUARD will play them a nice 'Thank you message'.")
+                st.write("When all detected people on the image are wearing a mask the MASK GUARD will give them a nice 'Thank you message'.")
                 thanks_mask = open('./src/utility/thanks_wear_mask.mp3', 'rb')
                 thanks_bytes = thanks_mask.read()
                 st.audio(thanks_bytes, format='audio/mp3')
@@ -228,12 +228,12 @@ class StreamlitDesign():
             with team3:
                 st.markdown(" ")
             with team2:
-                st.markdown("[*Aderemi Fayoyiwa*](<https://github.com/AderemiF>)")
                 st.image("images/Team/Aderemi.png",use_column_width=True)   
-                st.markdown("[*Marcin Szleszynski*](<https://github.com/martinezpl>)")
+                st.markdown("[*Aderemi Fayoyiwa*](<https://github.com/AderemiF>)")
                 st.image("images/Team/Marcin.png",use_column_width=True)            
-                st.markdown("[*Tobias Schulz*](<https://github.com/Tobias-GH-Schulz>)")
+                st.markdown("[*Marcin Szleszynski*](<https://github.com/martinezpl>)")
                 st.image("images/Team/Tobi.png",use_column_width=True)
+                st.markdown("[*Tobias Schulz*](<https://github.com/Tobias-GH-Schulz>)")
 
     def timeline(self):
         st.markdown("<h1 style='text-align: left; color: black;'>Road map</h1>", unsafe_allow_html=True)
@@ -251,6 +251,6 @@ class StreamlitDesign():
         with col1:
             st.write(" ") 
         with col2:
-            st.subheader("Together we will make the world a saver and healthier place")
+            st.subheader("Let's make the world a safer and healthier place.")
         with col3:
             st.write(" ")
