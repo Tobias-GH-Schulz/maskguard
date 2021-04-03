@@ -75,6 +75,7 @@ def main():
     #st.subheader(app_mode)
 
     if app_mode == mask_detection_page:
+        st.markdown("<h4 style='text-align: center; color: black;'>DISCLAIMER: Distance measurement will not be displayed 100% correctly during demo due to lack of camera calibration.</h4>", unsafe_allow_html=True)
         bgcolor = "#ff0000"
         fontcolor = "#000000"
         html_temp = """<div style="background-color:{};padding:10px"> 
