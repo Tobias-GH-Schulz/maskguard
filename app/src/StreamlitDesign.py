@@ -27,7 +27,7 @@ class StreamlitDesign():
         col1, col2, col3 = st.beta_columns([2,3,1])
         col1.header(" ")
         col2.header(" ")
-        col2.markdown("![Gif](https://media.giphy.com/media/vhy6Rp04tynvmeu2Nl/giphy.gif)")
+        col2.markdown("![Gif](https://media.giphy.com/media/zCbtS0oW5na1ttTVVf/giphy.gif)")
         col3.header(" ")
         
         st.title("Why Mask Guard?")
@@ -184,7 +184,27 @@ class StreamlitDesign():
         with st.beta_expander("Read about it:"):
             st.write("TEST")
 
-        st.markdown("<h2 style='text-align: left; color: black;'>5. Audio alarm</h2>", unsafe_allow_html=True)
+        st.markdown("<h2 style='text-align: left; color: black;'>5. Distance measurement</h2>", unsafe_allow_html=True)
+        with st.beta_expander("Read about it:"):
+            st.write("""To detect the distance of peoples from the camera, the triangle similarity technique is used. 
+                        During the camera calibration an image of a person with the head height H (we have assumed that 
+                        the average height of humans head is 22 centimetres) has to be captured as a reference in a 
+                        specified distance D (in centimetres) from the camera. After measuring the pixel height P of the 
+                        person's head on the reference image, these values can be used to calculate the focal length of 
+                        the camera with:""")
+            st.latex(r""" F = {(P x D)\over H} """)
+
+            st.write("""After calculating the focal length of the camera we can use a conversion of the formula to 
+                        calculate the distance of the camera to different persons on each frame of our video stream: """)
+            st.latex(r""" D' = {(H x F)\over P} """)
+            st.write("""Since there can be n people detected in a video and we want to measure the distance between 
+                        these peoples, the euclidean distance is calculated between the mid-points of the bounding boxes 
+                        of all the detected faces. If the distance between two people is less than 150 centimetres, a 
+                        red bounding box is displayed around the face indicating that they are not maintaining social distance. 
+                        """)
+        
+
+        st.markdown("<h2 style='text-align: left; color: black;'>6. Audio alarm</h2>", unsafe_allow_html=True)
         with st.beta_expander("Hear it:"):
             
             col1, col2, col3 = st.beta_columns([1,2,2])
@@ -235,6 +255,15 @@ class StreamlitDesign():
                 st.markdown("[*Tobias Schulz*](<https://github.com/Tobias-GH-Schulz>)")
                 st.image("images/Team/Tobi.png",use_column_width=True)
 
+            st.write("""We are three students at Strive School who embarked on this project during the computer vision module. 
+                        The goal was to train a model to detect if someone is wearing a face mask or not. We took the task up 
+                        several notches by including other amazing features like image optimization, distance measurement and audio warning.
+                        On this page we showcase the results of one week of work and are happy to update the application 
+                        during the next months. Check out our GitHub repository and feel free to contact us if you have comments and ideas 
+                        on improvements.""")
+
+            #st.markdown('[./images/Links/GitHub_Logo.png "GitHub Logo"]("<https://github.com/Tobias-GH-Schulz/mask-detector>")'))
+
     def timeline(self):
         st.markdown("<h1 style='text-align: left; color: black;'>Road map</h1>", unsafe_allow_html=True)
         bgcolor = "#ffffff"
@@ -243,7 +272,7 @@ class StreamlitDesign():
         <hr style="height:1px;border-width:0;color:{};background-color:{}">
         """
         st.markdown(html_line.format(bgcolor,fontcolor),unsafe_allow_html=True)
-        timeline = Image.open("images/timeline_demo.png")
+        timeline = Image.open("images/timeline.png")
         st.image(timeline)
 
     def end(self):
