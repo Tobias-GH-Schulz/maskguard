@@ -58,12 +58,12 @@ class StreamlitDesign():
 
         st.markdown("<h2 style='text-align: left; color: black;'>1. Image optimizer</h2>", unsafe_allow_html=True)
         with st.beta_expander("Read about it:"):
-            st.write("""The potential places in which Mask Guard will be used differ a lot and so will the lighting conditions. 
+            '''st.write("""The potential places in which Mask Guard will be used differ a lot and so will the lighting conditions. 
                         To prepare the detector as best as possible for different environments we implemented an image optimization 
                         stage. In the current version of Mask Guard the optimizer uses adaptive contrast stretching. 
                         Therefore the frame is splitted into H, S, and V channel to adjust the original image depending 
-                        on the mean pixel value in the V channel.""")
-            col1, col2, col3 = st.beta_columns([12,12,13])
+                        on the mean pixel value in the V channel.""")'''
+            '''col1, col2, col3 = st.beta_columns([12,12,13])
             with col1:
                 st.markdown("<h4 style='text-align: center; color: black;'>Original image</h4>", unsafe_allow_html=True)
                 original_image = Image.open("images/Image_optimizer/Original_image.png")
@@ -76,6 +76,44 @@ class StreamlitDesign():
                 st.markdown("<h4 style='text-align: center; color: black;'>Optimized image</h4>", unsafe_allow_html=True)
                 optimized_image = Image.open("images/Image_optimizer/Optimized_image.png")
                 st.image(optimized_image)
+            '''
+            col0, col1, col2, col3 = st.beta_columns([9,12,12,9])
+            with col0:
+                st.write(" ")
+
+            with col1:
+                st.markdown("<h4 style='text-align: center; color: black;'>Original image</h4>", unsafe_allow_html=True)
+                original_image = Image.open("images/Image_optimizer/Original_image.png")
+                st.image(original_image)
+
+                st.write(" ")
+                st.write("""The potential places in which Mask Guard will be used differ a lot and so will the lighting conditions. 
+                        To prepare the detector as best as possible for different environments we implemented an image optimization 
+                        stage. In the current version of Mask Guard the optimizer uses adaptive contrast stretching. 
+                        Therefore the frame is splitted into H, S, and V channel to adjust the original image depending 
+                        on the mean pixel value in the V channel.""")
+
+                st.write(" ")
+                st.write(" ")
+                st.markdown("<h4 style='text-align: center; color: black;'>Optimized image</h4>", unsafe_allow_html=True)
+                optimized_image = Image.open("images/Image_optimizer/Optimized_image.png")
+                st.image(optimized_image)
+            with col2:
+                st.markdown("<h4 style='text-align: center; color: black;'> </h4>", unsafe_allow_html=True)
+                arrow_right = Image.open("images/Image_optimizer/Arrow_right.png")
+                st.image(arrow_right)
+            
+                st.markdown("<h4 style='text-align: center; color: black;'>HSV cylinder</h4>", unsafe_allow_html=True)
+                hsv_image = Image.open("images/Image_optimizer/hsv.jpg")
+                st.image(hsv_image, use_column_width=True)
+
+                st.markdown("<h4 style='text-align: center; color: black;'> </h4>", unsafe_allow_html=True)
+                arrow_left = Image.open("images/Image_optimizer/Arrow_left.png")
+                st.image(arrow_left)
+
+            with col3:
+                st.write(" ")
+                
 
         st.markdown("<h2 style='text-align: left; color: black;'>2. Motion detector</h2>", unsafe_allow_html=True)
         with st.beta_expander("Read about it:"):
