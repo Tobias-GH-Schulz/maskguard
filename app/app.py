@@ -4,6 +4,7 @@ import queue
 import urllib.request
 from pathlib import Path
 import tempfile
+import base64
 #from typing import List, NamedTuple
 
 #try:
@@ -88,11 +89,12 @@ def main():
     StreamlitDesign().timeline()
     StreamlitDesign().end()
 
+
 def app_video_upload():
     """ User video upload """
-    # TODO: delete existing processed.avi
+    # TODO: delete existing mask_guard.avi
     legal_extensions = ["avi", "mp4"]
-    uploaded_file = st.file_uploader(f"Upload a video. Legal formats: {legal_extensions}", ["avi", "mp4"]) 
+    uploaded_file = st.file_uploader(f"Upload a video. Mind that, the longer the video, the longer the processing time.", ["avi", "mp4"]) 
     if uploaded_file:
         st.write("Processing the video. It may take a few minutes.")
         tfile = tempfile.NamedTemporaryFile(delete=False)
@@ -104,16 +106,24 @@ def app_video_upload():
         height = int(video.get(cv2.CAP_PROP_FRAME_HEIGHT) + 0.5)
         size = (width, height)
         fourcc = cv2.VideoWriter_fourcc(*'XVID')
-        out = cv2.VideoWriter('processed.avi', fourcc, 20.0, size)
+        out = cv2.VideoWriter('mask_guard.avi', fourcc, 20.0, size)
         rval, frame = video.read()
         while rval:
             rval, frame = video.read()
             processed_frame = assembly.forwardFrame(frame)
             out.write(processed_frame)
-            
+        bin_file = 'mask_guard.avi' 
+        with open(bin_file, 'rb') as f:
+            data = f.read()
+        bin_str = base64.b64encode(data).decode()
+        href = f'<a href="data:application/octet-stream;base64,{bin_str}" download="{os.path.basename(bin_file)}">Download video</a>' 
+        
+        st.markdown(href, unsafe_allow_html=True)
+
+           
     def create_player():
         try:
-            return MediaPlayer("processed.avi")
+            return MediaPlayer("mask_guard.avi")
         except:
             pass
 
@@ -123,7 +133,7 @@ def app_video_upload():
         client_settings=WEBRTC_CLIENT_SETTINGS,
         player_factory=create_player,
     )  
-
+    
 class ModelAssembly():
     def __init__(self) -> None:
         self.face_detector = FaceDetector(FACE_PROTO, FACE_MODEL)
