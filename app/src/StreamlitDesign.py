@@ -269,7 +269,7 @@ class StreamlitDesign():
                 st.markdown("[*Marcin Szleszynski*](<https://github.com/martinezpl>)")
                 st.image("images/Team/Tobi.png",use_column_width=True)
                 st.markdown("[*Tobias Schulz*](<https://github.com/Tobias-GH-Schulz>)")
-            
+            st.write(" ")
             st.write("""ABOUT US:""")
             st.write("""We are three students at Strive School who embarked on this project during the computer vision module. 
                         The goal was to train a model to detect if someone is wearing a face mask or not. We took the task up 
@@ -392,7 +392,7 @@ class StreamlitDesign():
                             0AAAAEdAAAAEBABwAAAAEdAAAAENABAAAgD/9fgAEAKcxisFjVfn0AAAAASUVORK5CYII="""
             html = f"<a href='https://github.com/Tobias-GH-Schulz/mask-detector'><img src='data:image/png;base64,{github_base64}' style='max-height: 150px; max-width: 150px;'></a>"
             st.markdown(html, unsafe_allow_html=True)
-            st.write("""INQUIRIES: mask_guard@gmail.com""")
+            st.write("""INQUIRIES: maskguard21@gmail.com""")
 
     def timeline(self):
         st.markdown("<h1 style='text-align: left; color: black;'>Road map</h1>", unsafe_allow_html=True)
