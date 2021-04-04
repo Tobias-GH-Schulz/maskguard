@@ -79,8 +79,7 @@ def main():
         bgcolor = "#ff0000"
         fontcolor = "#000000"
         html_temp = """<div style="background-color:{};padding:10px"> 
-                        <h2 style="color:{};text-align:center;">Now you have 
-                        read a lot about Mask Guard. Time to try it yourself!</h2> 
+                        <h2 style="color:{};text-align:center;">Try it out with your camera!</h2> 
                         </div>"""
         st.markdown(html_temp.format(bgcolor,fontcolor),unsafe_allow_html=True)
         app_mask_detection()
