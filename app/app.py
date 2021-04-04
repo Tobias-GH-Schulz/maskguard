@@ -62,7 +62,7 @@ def main():
         "Real time demo"
     )
     video_upload_page = "Upload a video"
-    app_mode = st.sidebar.selectbox(
+    app_mode = st.selectbox(
         "Choose the app mode",
         [
             mask_detection_page,
