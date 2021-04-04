@@ -269,13 +269,14 @@ class StreamlitDesign():
                 st.markdown("[*Marcin Szleszynski*](<https://github.com/martinezpl>)")
                 st.image("images/Team/Tobi.png",use_column_width=True)
                 st.markdown("[*Tobias Schulz*](<https://github.com/Tobias-GH-Schulz>)")
-
+            
+            st.write("""INQUIRIES: mask_guard@gmail.com""")
+            st.write("""ABOUT US:""")
             st.write("""We are three students at Strive School who embarked on this project during the computer vision module. 
                         The goal was to train a model to detect if someone is wearing a face mask or not. We took the task up 
                         several notches by including other amazing features like image optimization, distance measurement and audio warning.
                         On this page we showcase the results of one week of work and are happy to update the application 
-                        during the next months. Check out our GitHub repository and feel free to contact us if you have comments and ideas 
-                        on improvements:""")
+                        during the next months.""")
 
             #st.markdown('[./images/Links/GitHub_Logo.png "GitHub Logo"]("<https://github.com/Tobias-GH-Schulz/mask-detector>")'))
             #st.markdown('[![]./Users/tobiasschulz/Documents/GitHub/mask-detector/app/images/Links/GitHub_Logo.png "GitHub Logo"](''<https://www.buymeacoffee.com/joby>)')
