@@ -753,7 +753,7 @@ class StreamlitDesign():
                             0AAAAEdAAAAEBABwAAAAEdAAAAENABAAAgD/9fgAEAKcxisFjVfn0AAAAASUVORK5CYII="""
             html = f"<a href='https://github.com/Tobias-GH-Schulz/mask-detector'><img src='data:image/png;base64,{github_base64}' style='max-height: 150px; max-width: 150px;'></a>"
             st.markdown(html, unsafe_allow_html=True)
-            st.write("""INQUIRIES: maskguard21@gmail.com""")
+            st.write("""INQUIRIES: \n\n maskguard21@gmail.com""")
 
     def timeline(self):
         st.markdown("<h1 style='text-align: left; color: black;'>Road map</h1>", unsafe_allow_html=True)
