@@ -18,3 +18,4 @@ dependencies:
     - playsound
     - streamlit_webrtc
     - aiortc
+    - streamlit_player
