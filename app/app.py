@@ -221,9 +221,9 @@ def app_mask_detection():
             img = frame.to_ndarray(format="bgr24") ## PIL ?
            
             return self.assembly.forwardFrame(img, soundOn = (self.type == "sound_warnings"))
-
+# TODO: audio play, camera focal calibration
     transformer_type = st.radio(
-        "Select mode", ("basic", "sound_warnings")
+        "Select features", ("basic")
     )
 
     webrtc_ctx = webrtc_streamer(
