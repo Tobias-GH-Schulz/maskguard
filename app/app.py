@@ -222,9 +222,9 @@ def app_mask_detection():
            
             return self.assembly.forwardFrame(img, soundOn = (self.type == "sound_warnings"))
 # TODO: audio play, camera focal calibration
-    transformer_type = st.radio(
-        "Select features", ("basic")
-    )
+   # transformer_type = st.radio(
+   #     "Select features", ("basic", "sound_warnings", "cam_calib")
+   # )
 
     webrtc_ctx = webrtc_streamer(
         key="opencv-filter",
@@ -234,8 +234,8 @@ def app_mask_detection():
         async_transform=True,
     )
 
-    if webrtc_ctx.video_transformer:
-        webrtc_ctx.video_transformer.type = transformer_type
+   # if webrtc_ctx.video_transformer:
+   #     webrtc_ctx.video_transformer.type = transformer_type
 
 if __name__ == "__main__":
     logging.basicConfig(
