@@ -102,7 +102,6 @@ def main():
     StreamlitDesign().timeline()
     StreamlitDesign().end()
 
-#TODO optimize output video size with ffmpeg
 def app_video_upload():
     """ User video upload """
     legal_extensions = ["avi", "mp4"]
