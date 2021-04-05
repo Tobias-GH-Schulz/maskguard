@@ -12,3 +12,4 @@ streamlit==0.79.0
 streamlit_webrtc==0.7.2
 typing_extensions==3.7.4.3
 streamlit_player==0.1.5
+imutils==0.5.4
