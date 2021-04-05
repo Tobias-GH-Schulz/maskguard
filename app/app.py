@@ -5,6 +5,8 @@ import urllib.request
 from pathlib import Path
 import tempfile
 import base64
+import subprocess as sp
+#TODO: dist calibration as type of transfer class
 #from typing import List, NamedTuple
 
 #try:
@@ -16,6 +18,7 @@ import av
 import cv2
 import numpy as np
 import streamlit as st
+from imutils.video import FileVideoStream
 from streamlit_player import st_player
 from aiortc.contrib.media import MediaPlayer
 from PIL import Image
@@ -54,6 +57,7 @@ WEBRTC_CLIENT_SETTINGS = ClientSettings(
     media_stream_constraints={"video": True, "audio": False},
 )
 
+FFMPEG_BIN = "ffmpeg"
 
 def main():
     StreamlitDesign().content()
@@ -66,7 +70,7 @@ def main():
         "Real time demo"
     )
     video_upload_page = "Upload a video"
-    st.markdown("<h1 style='text-align: left; color: black;'>Here you can choose between different app modes:</h1>", unsafe_allow_html=True)
+    st.markdown("<h1 style='text-align: left; color: black;'>Available demo modes:</h1>", unsafe_allow_html=True)
     app_mode = st.selectbox(
         " ",
         [
@@ -98,50 +102,56 @@ def main():
     StreamlitDesign().timeline()
     StreamlitDesign().end()
 
-
+#TODO optimize output video size with ffmpeg
 def app_video_upload():
     """ User video upload """
-    # TODO: delete existing mask_guard.avi
     legal_extensions = ["avi", "mp4"]
     uploaded_file = st.file_uploader(f"Upload a video. Mind that, the longer the video, the longer the processing time.", ["avi", "mp4"]) 
     if uploaded_file:
         st.write("Processing the video. It may take a few minutes.")
         tfile = tempfile.NamedTemporaryFile(delete=False)
         tfile.write(uploaded_file.read())
-        video = cv2.VideoCapture(tfile.name)
+        fvs = FileVideoStream(tfile.name).start()
+        video_in = fvs.stream
+        frame_width = int(video_in.get(cv2.CAP_PROP_FRAME_WIDTH))
+        frame_height = int(video_in.get(cv2.CAP_PROP_FRAME_HEIGHT))
+        fps = video_in.get(cv2.CAP_PROP_FPS)
+        frame_count = int(video_in.get(cv2.CAP_PROP_FRAME_COUNT))
         assembly = ModelAssembly()
-        # FOR RECORDING
-        width = int(video.get(cv2.CAP_PROP_FRAME_WIDTH) + 0.5)
-        height = int(video.get(cv2.CAP_PROP_FRAME_HEIGHT) + 0.5)
-        size = (width, height)
-        fourcc = cv2.VideoWriter_fourcc(*'XVID')
-        out = cv2.VideoWriter('mask_guard.avi', fourcc, 20.0, size)
-        rval, frame = video.read()
-        while rval:
-            rval, frame = video.read()
-            processed_frame = assembly.forwardFrame(frame)
-            out.write(processed_frame)
-        bin_file = 'mask_guard.avi' 
+        
+        # See http://zulko.github.io/blog/2013/09/27/read-and-write-video-frames-in-python-using-ffmpeg/
+        command = ['ffmpeg',
+                   '-loglevel', 'error',
+                   '-y',
+                   # Input
+                   '-f', 'rawvideo',
+                   '-vcodec', 'rawvideo',
+                   '-pix_fmt', 'bgr24',
+                   '-s', str(frame_width) + 'x' + str(frame_height),
+                   '-r', str(fps),
+                   # Output
+                   '-i', '-',
+                   '-an',
+                   '-vcodec', 'h264',
+                   '-r', str(fps),
+                   '-pix_fmt', 'rgb24',
+                   "mask_guard.mp4"
+                   ]
+        pipe = sp.Popen(command, stdin=sp.PIPE)        
+        while fvs.more():
+            frame = fvs.read()
+            if frame is not None:
+                processed_frame = assembly.forwardFrame(frame)
+                pipe.stdin.write(processed_frame.tobytes())
+        pipe.stdin.close()
+        pipe.wait() 
+        bin_file = 'mask_guard.mp4' 
         with open(bin_file, 'rb') as f:
             data = f.read()
         bin_str = base64.b64encode(data).decode()
         href = f'<a href="data:application/octet-stream;base64,{bin_str}" download="{os.path.basename(bin_file)}">Download video</a>' 
         
         st.markdown(href, unsafe_allow_html=True)
-
-           
-    def create_player():
-        try:
-            return MediaPlayer("mask_guard.avi")
-        except:
-            pass
-
-    webrtc_streamer(
-        key="media",
-        mode=WebRtcMode.RECVONLY,
-        client_settings=WEBRTC_CLIENT_SETTINGS,
-        player_factory=create_player,
-    )  
     
 class ModelAssembly():
     def __init__(self) -> None:
@@ -156,7 +166,7 @@ class ModelAssembly():
     def __cropout(self, img, box):
         return img[box[1]:box[3], box[0]:box[2]]
 
-    def forwardFrame(self, frame): 
+    def forwardFrame(self, frame):
         annotater = Annotater(frame)
         face_crops = []
         face_boxes, _ = self.face_detector.detect(frame, FACE_CONFID_THRESH)
