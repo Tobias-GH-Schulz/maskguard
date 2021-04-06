@@ -9,7 +9,7 @@ Mask Guard is a Mask-No-Mask detector that detects if your customers are wearing
 
 ---
 
-## Machine Learning Model 🤖
+## Model Training 🤖
 - Transfer learning 
 - Model: CNN(MobileNetV2)
 - Computer vision (OpenCV)
