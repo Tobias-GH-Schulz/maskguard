@@ -1,6 +1,6 @@
 # Mask Guard
 
-![Logo](https://github.com/Tobias-GH-Schulz/mask-detector/blob/main/images/logo_large.png "Logo") 
+![Logo](https://github.com/Tobias-GH-Schulz/mask-detector/blob/main/app/images/logo_large.png "Logo") 
 
 ---
 
@@ -42,7 +42,7 @@ __Cloud:__ Google Cloud Platform
 ## Further optimization 🚧
 For even better performance, we are adding some features and improving some of the existing features of Mask Guard. Here is our plan:
 
-![Road map](https://github.com/Tobias-GH-Schulz/mask-detector/blob/main/images/timeline.png "Road map") 
+![Road map](https://github.com/Tobias-GH-Schulz/mask-detector/blob/main/app/images/timeline.png "Road map") 
 
 ---
 
