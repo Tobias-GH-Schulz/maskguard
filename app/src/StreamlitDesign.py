@@ -787,5 +787,5 @@ class StreamlitDesign():
 
         col1.header(" ")
         col2.header(" ")
-        st.markdown("<h1 style='text-align: center; color: black;'>Let's make the world a safer and healthier place.</h1>", unsafe_allow_html=True)
+        st.markdown("<h1 style='text-align: center; color: black;'>Keeps virus at bay.</h1>", unsafe_allow_html=True)
         col3.header(" ")
