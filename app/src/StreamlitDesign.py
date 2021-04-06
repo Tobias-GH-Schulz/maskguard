@@ -194,7 +194,7 @@ class StreamlitDesign():
                 st.write(" ")
             with col2:
                 st.markdown("<h3 style='text-align: center; color: black;'>Image examples from dataset</h3>", unsafe_allow_html=True)
-                Mask_NoMask = ("images/Features/Mask_NoMask_Detector.png")
+                Mask_NoMask = Image.open("images/Features/Mask_NoMask_Detector.png")
                 st.image(Mask_NoMask, use_column_width=True)
             with col3:
                 st.write(" ")
@@ -572,7 +572,8 @@ class StreamlitDesign():
             with ad1:
                 st.markdown(" ")
             with ad2:
-                st.image("images/Team/Aderemi.png",use_column_width=True)
+                aderemi_im = Image.open("images/Team/Aderemi.png")
+                st.image(aderemi_im, use_column_width=True)
                 st.markdown("<h4 style='text-align: center; color: black;'>Aderemi Fayoyiwa</h4>", unsafe_allow_html=True)   
             with ad3:
                 st.markdown(" ")
@@ -593,7 +594,8 @@ class StreamlitDesign():
             with ma1:
                 st.markdown(" ")
             with ma2:
-                st.image("images/Team/Marcin.png",use_column_width=True)
+                marcin_im = Image.open("images/Team/Marcin.png")
+                st.image(marcin_im, use_column_width=True)
                 st.markdown("<h4 style='text-align: center; color: black;'>Marcin Szleszynski</h4>", unsafe_allow_html=True)   
             with ma3:
                 st.markdown(" ")
@@ -614,7 +616,8 @@ class StreamlitDesign():
             with to1:
                 st.markdown(" ")
             with to2:
-                st.image("images/Team/Tobi.png",use_column_width=True)
+                tobi_im = Image.open("images/Team/Tobi.png")
+                st.image(tobi_im, use_column_width=True)
                 st.markdown("<h4 style='text-align: center; color: black;'>Tobias Schulz</h4>", unsafe_allow_html=True)   
             with to3:
                 st.markdown(" ")
