@@ -1,41 +1,48 @@
 # Mask Guard
 
-![Logo](https://www.davisopticians.co.uk/Uploads/Image/comp%20DRi.jpg "The retina") 
+![Logo](https://github.com/Tobias-GH-Schulz/mask-detector/blob/main/logo_large.png) 
 
 ---
 
 ## Description 📝
-A machine learning model was trained to detect Diabetic Eye Disease (DED) from retina scan images
+Mask Guard is a Mask-No-Mask detector that detects if your customers are wearing a mask or not and alerts them if they are not wearing one. Mask Guard includes other amazing features like image optimization, distance measurement and audio warning. Our highly educated team put all their knowledge in deep learning and computer vision together to create a tool that gives businesses and their customers SECURITY in this pandemic. This github repo contains all the parts that Mask Guard is made of.
 
 ---
 
 ## Machine Learning Model 🤖
-- Transfer learning
-- Model: CNN(EfficientNetB0)
+- Transfer learning 
+- Model: CNN(MobileNetV2)
+- Computer vision (OpenCV)
 
 ---
 
 ## Technologies 💻
-|Python | Github | Heroku |
+|Python | Pytorch | Github |
 |--- |--- |--- |
-|**Google Cloud Platform** |**Google Colab** | **Streamlit** |
+|**Google Cloud Platform** |**OpenCV** | **Streamlit** |
 
 ---
 
 ## How to use ⚒
-- Our model is deployed on Heroku 
-- Checkout our presentation and test our model [here](https://ded-detector.herokuapp.com)
+- Mask Guard has been deployed as an easy to use and interactive web app  
+- You can find more details about Mask Guard and checkout the demo [here](https://mask-deploy.ue.r.appspot.com/)
 
 ---
 
-## Awards 🏆
-- Runner-up [Hackhull-medhack-2021](https://devpost.com/software/red-detector)
+## Further optimization 🚧
+For even better performance, we are adding additional features and improving some of the existing features of Mask Guard. Here is our plan:
+![Logo](https://github.com/Tobias-GH-Schulz/mask-detector/blob/main/timeline.png) 
 
 ---
 
 ## Authors 👨🏾‍💻 👩🏾‍💻
-- **Ibrahim Animashaun** [Github](https://github.com/iaanimashaun) , [Email](https://mail.google.com/mail/u/0/?fs=1&to=iaanimashaun@gmail.com&su=SUBJECT&body=BODY&tf=cm)
-- **Aderemi Fayoyiwa** [Github](https://github.com/AderemiF) , [Email](https://mail.google.com/mail/u/0/?fs=1&to=aderemifayoyiwa@gmail.com&su=SUBJECT&body=BODY&tf=cm)
+- **Marcin Szleszynski** [Github](https://github.com/martinezpl) , [Linkedin](https://www.linkedin.com/in/marcin-szleszynski-560b021bb/)
+- **Aderemi Fayoyiwa** [Github](https://github.com/AderemiF) , [Linkedin](https://www.linkedin.com/in/aderemi-fayoyiwa/)
+- **Tobias Schulz** [Github](https://github.com/Tobias-GH-Schulz) , [Linkedin](https://www.linkedin.com/in/tobias-schulz-77b09691/)
 
+---
 
->_**Thanks for stopping by**_
+## Enquiries ❓
+For further clarification and enquiries, send a mail to **maskguard21@gmail.com** and we will get back to you at the shortest possible time.
+
+>_**Improve safety at your business and keep it afloat with Mask Guard**_
