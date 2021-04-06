@@ -11,19 +11,25 @@ We applied our knowledge in deep learning and computer vision to create a tool t
 
 ---
 
-## Model Training 🤖
-- Transfer learning 
-- Model: CNN(MobileNetV2)
-- Computer vision (OpenCV)
+## Models 🤖
+- Body Detecting CNN: pre-trained SSD,
+- Face Detecting CNN: pre-trained SSD,
+- Mask-No-Mask Classifier: MobileNetV2 w/ customized head,
 
 ---
 
 ## Technologies 💻
+
 __Language:__ Python 
+
 __DL Training:__ PyTorch
+
 __Computer Vision:__ OpenCV, imutils
+
 __Web App:__ Streamlit, WebRTC 
+
 __Cloud:__ Google Cloud Platform
+
 
 ---
 
