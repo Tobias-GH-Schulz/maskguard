@@ -20,8 +20,8 @@ Mask Guard is a Mask-No-Mask detector that detects if your customers are wearing
 - Github
 - Python 
 - Pytorch
-- OpenCV
 - Streamlit
+- OpenCV
 - Google Cloud Platform
 
 ---
