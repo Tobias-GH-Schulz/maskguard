@@ -1,6 +1,6 @@
 # Mask Guard
 
-![Logo](https://github.com/Tobias-GH-Schulz/mask-detector/blob/main/logo_large.png) 
+![Logo](https://github.com/Tobias-GH-Schulz/mask-detector/blob/main/logo_large.png "Logo") 
 
 ---
 
