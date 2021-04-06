@@ -24,7 +24,7 @@ Mask Guard is a Mask-No-Mask detector that detects if your customers are wearing
 ---
 
 ## How to use ⚒
-- Mask Guard has been deployed as an easy to use and interactive web app  
+- Mask Guard has been deployed as an easy-to-use and interactive web app  
 - You can find more details about Mask Guard and checkout the demo [here](https://mask-deploy.ue.r.appspot.com/)
 
 ---
