@@ -17,7 +17,7 @@ class StreamlitDesign():
         col1.header(" ")
         col2.header(" ")
         image1 = Image.open("images/logo_large.png")
-        col2.image(image1, use_column_width = True)
+        col2.image(image1, use_column_width=True)
         col3.header(" ")
 
         st.write(" ")
@@ -779,13 +779,13 @@ class StreamlitDesign():
         st.write(" ")
         st.write(" ")
         st.write(" ")
-        st.markdown("<h1 style='text-align: center; color: black;'>Let's make the world a safer and healthier place.</h1>", unsafe_allow_html=True)
         
-
-
         col1, col2, col3 = st.beta_columns([1,3,1])
-        col1.header(" ")
-        col2.header(" ")
         image1 = Image.open("images/logo_large.png")
         col2.image(image1, use_column_width = True)
+
+
+        col1.header(" ")
+        col2.header(" ")
+        st.markdown("<h1 style='text-align: center; color: black;'>Let's make the world a safer and healthier place.</h1>", unsafe_allow_html=True)
         col3.header(" ")
