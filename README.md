@@ -1,6 +1,6 @@
 # Mask Guard
 
-![Logo](https://github.com/Tobias-GH-Schulz/mask-detector/blob/main/logo_large.png "Logo") 
+![Logo](https://github.com/Tobias-GH-Schulz/mask-detector/blob/main/images/logo_large.png "Logo") 
 
 ---
 
@@ -35,7 +35,7 @@ Mask Guard is a Mask-No-Mask detector that detects if your customers are wearing
 ## Further optimization 🚧
 For even better performance, we are adding some features and improving some of the existing features of Mask Guard. Here is our plan:
 
-![Road map](https://github.com/Tobias-GH-Schulz/mask-detector/blob/main/timeline.png "Road map") 
+![Road map](https://github.com/Tobias-GH-Schulz/mask-detector/blob/main/images/timeline.png "Road map") 
 
 ---
 
