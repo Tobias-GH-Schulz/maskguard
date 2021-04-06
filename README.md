@@ -5,7 +5,9 @@
 ---
 
 ## About 📝
-Mask Guard is a Mask-No-Mask detector that detects if your customers are wearing a mask or not and alerts them if they are not wearing one. Mask Guard includes other amazing features like image optimization, distance measurement and audio warning. The team applied their knowledge in deep learning and computer vision  to create a tool that gives businesses and their customers SECURITY in this pandemic. This github repo contains all the parts that Mask Guard is made of.
+Mask Guard is a multi-model assembly that detects if your customers are wearing a mask or not and plays an alert if they are not wearing one. Mask Guard consists of CNN models that detect body and face, it is capable of image optimization and image-based distance measurement, both from camera and between objects. 
+
+We applied our knowledge in deep learning and computer vision to create a tool that helps businesses comply with sanitary regulations. This repo contains all the parts that Mask Guard is made of.
 
 ---
 
@@ -17,12 +19,11 @@ Mask Guard is a Mask-No-Mask detector that detects if your customers are wearing
 ---
 
 ## Technologies 💻
-- Github
-- Python 
-- Pytorch
-- OpenCV
-- Streamlit
-- Google Cloud Platform
+__Language:__ Python 
+__DL Training:__ PyTorch
+__Computer Vision:__ OpenCV, imutils
+__Web App:__ Streamlit, WebRTC 
+__Cloud:__ Google Cloud Platform
 
 ---
 
@@ -47,7 +48,7 @@ For even better performance, we are adding some features and improving some of t
 ---
 
 ## Enquiries ❓
-For further clarification and enquiries, send a mail to **maskguard21@gmail.com** and we will get back to you at the shortest possible time.
+For further clarification and inquiries, send a mail to **maskguard21@gmail.com** and we will get back to you at the shortest possible time.
 
 
 >_**Improve safety at your business and keep it afloat with Mask Guard**_
