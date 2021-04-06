@@ -4,7 +4,7 @@
 
 ---
 
-## Description 📝
+## About 📝
 Mask Guard is a Mask-No-Mask detector that detects if your customers are wearing a mask or not and alerts them if they are not wearing one. Mask Guard includes other amazing features like image optimization, distance measurement and audio warning. The team applied their knowledge in deep learning and computer vision  to create a tool that gives businesses and their customers SECURITY in this pandemic. This github repo contains all the parts that Mask Guard is made of.
 
 ---
