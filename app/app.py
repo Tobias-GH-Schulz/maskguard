@@ -61,45 +61,21 @@ WEBRTC_CLIENT_SETTINGS = ClientSettings(
 FFMPEG_BIN = "ffmpeg"
 
 def main():
-    StreamlitDesign().content()
+    StreamlitDesign().content() 
+    StreamlitDesign().sidebar()
     StreamlitDesign().features()
 
-    play_demo_video = (
-        "Play demo video"
-        )
-    mask_detection_page = (
-        "Real time demo"
-    )
-    video_upload_page = "Upload a video"
-    st.markdown("<h1 style='text-align: left; color: black;'>Available demo modes:</h1>", unsafe_allow_html=True)
-    app_mode = st.selectbox(
-        " ",
-        [
-            play_demo_video,
-            mask_detection_page,
-            video_upload_page,
-        ],
-    )
-
-    StreamlitDesign().sidebar()
-
-    if app_mode == mask_detection_page:
-        st.markdown("<h4 style='text-align: center; color: black;'>DISCLAIMER: Distance measurement will not be displayed 100% correctly during demo due to lack of camera calibration. Audio alarm system is not active during live demo.</h4>", unsafe_allow_html=True)
-        bgcolor = "#ff0000"
-        fontcolor = "#000000"
-        html_temp = """<div style="background-color:{};padding:10px"> 
-                        <h2 style="color:{};text-align:center;">Try it out with your camera!</h2> 
-                        </div>"""
-        st.markdown(html_temp.format(bgcolor,fontcolor),unsafe_allow_html=True)
-        app_mask_detection()
-    elif app_mode == play_demo_video:
-        st_player("https://youtu.be/dHb1PDF_VMM")
-    elif app_mode == video_upload_page:
-        app_video_upload()
+    st.markdown("<h1 style='text-align: left; color: black;'>Demos</h1>", unsafe_allow_html=True)
+  
+    st_player("https://youtu.be/dHb1PDF_VMM")
 
     st.write(" ")
     st.write(" ")
-    
+    st.markdown(
+            """<h2><a style='display: block; text-align: center; color: green' href="https://maskguard.appspot.com/">Upload a video or test it with your camera!</a></h2>
+    """,
+    unsafe_allow_html=True,
+    )
     StreamlitDesign().timeline()
     StreamlitDesign().end()
 
