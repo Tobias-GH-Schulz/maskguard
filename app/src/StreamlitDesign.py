@@ -20,30 +20,6 @@ class StreamlitDesign():
         col2.image(image1, use_column_width=True)
         col3.header(" ")
 
-        st.write(" ")
-        st.markdown("<h2 style='text-align: center; color: black;'>Are you looking for a way to make your business a safer place during this corona pandemic?</h2>", unsafe_allow_html=True)
-        st.write(" ")
-
-        col1, col2, col3 = st.beta_columns([2,3,1])
-        col1.header(" ")
-        col2.header(" ")
-        col2.markdown("![Gif](https://media.giphy.com/media/zCbtS0oW5na1ttTVVf/giphy.gif)")
-        col3.header(" ")
-        
-        st.title("Why Mask Guard?")
-        st.markdown("""
-                    We are living in the dangerous and uncertain time of a pandemic.
-                    A huge amount of SMBs has been closed down by the authorities 
-                    during the pandemic. Do you also want to be one of them because your 
-                    business has been declared a super spreader location? 
-                    Of course not! And thats why we invented the Mask Guard, a Mask-No-Mask 
-                    detector that detects if your customers are wearing a mask or not and only 
-                    lets them enter your business if they are wearing one. 
-                    Our highly educated team put all their knowledge in deep learning and computer vision 
-                    together to create a tool that gives you one thing that lets you and also your customers
-                    sleep well at night: SECURITY!
-                    """)
-
     def features(self):
         col1, col2 = st.beta_columns([1, 2])
         st.markdown("<h1 style='text-align: left; color: black;'>Features</h1>", unsafe_allow_html=True)

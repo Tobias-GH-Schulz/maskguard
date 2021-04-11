@@ -61,52 +61,73 @@ WEBRTC_CLIENT_SETTINGS = ClientSettings(
 FFMPEG_BIN = "ffmpeg"
 
 def main():
-    StreamlitDesign().content()
-    StreamlitDesign().features()
+    icon = Image.open("images/logo_symbol.png")
+    st.set_page_config(
+        page_title="MASK GUARD",
+        page_icon=icon,
+        layout="wide",
+        initial_sidebar_state="collapsed",
+            )
 
-    play_demo_video = (
-        "Play demo video"
-        )
-    mask_detection_page = (
-        "Real time demo"
-    )
-    video_upload_page = "Upload a video"
-    st.markdown("<h1 style='text-align: left; color: black;'>Available demo modes:</h1>", unsafe_allow_html=True)
-    app_mode = st.selectbox(
-        " ",
-        [
-            play_demo_video,
-            mask_detection_page,
-            video_upload_page,
-        ],
-    )
+    st.write("Go back to [maskguard.link](https://www.maskguard.link)")
 
-    StreamlitDesign().sidebar()
+    st.markdown("<h1 style='text-align: center; color: black;'>Try maskguard with your camera!</h1>", unsafe_allow_html=True)
+    bgcolor = "#ffffff"
+    fontcolor = "#ff0000"
+    html_line = """
+    <hr style="height:1px;border-width:0;color:{};background-color:{}">
+    """
+    st.markdown(html_line.format(bgcolor,fontcolor),unsafe_allow_html=True)
 
-    if app_mode == mask_detection_page:
-        st.markdown("<h4 style='text-align: center; color: black;'>DISCLAIMER: Distance measurement will not be displayed 100% correctly during demo due to lack of camera calibration. Audio alarm system is not active during live demo.</h4>", unsafe_allow_html=True)
-        bgcolor = "#ff0000"
-        fontcolor = "#000000"
-        html_temp = """<div style="background-color:{};padding:10px"> 
-                        <h2 style="color:{};text-align:center;">Try it out with your camera!</h2> 
-                        </div>"""
-        st.markdown(html_temp.format(bgcolor,fontcolor),unsafe_allow_html=True)
-        app_mask_detection()
-    elif app_mode == play_demo_video:
-        st_player("https://youtu.be/dHb1PDF_VMM")
-    elif app_mode == video_upload_page:
-        app_video_upload()
+    bgcolor = "#fc6565"
+    fontcolor = "#000000"
+    html_temp = """<div style="background-color:{};padding:10px"> 
+                    <h4 style="color:{};text-align:center;">DISCLAIMER: Click start to load the demo. (Loading will take a while!) Distance measurement may not be accurate due to lack of camera calibration. Audio warnings are off.</h4> 
+                    </div>"""
+    st.markdown(html_temp.format(bgcolor,fontcolor),unsafe_allow_html=True)
+    app_mask_detection()
+
+    bgcolor = "#ffffff"
+    fontcolor = "#ff0000"
+    html_line = """
+    <hr style="height:1px;border-width:0;color:{};background-color:{}">
+    """
+    st.markdown(html_line.format(bgcolor,fontcolor),unsafe_allow_html=True)
 
     st.write(" ")
     st.write(" ")
+
+    st.markdown("<h1 style='text-align: center; color: black;'>Upload a video you would like to analyze!</h1>", unsafe_allow_html=True)
     
-    StreamlitDesign().timeline()
-    StreamlitDesign().end()
+    st.markdown("<h4 style='text-align: center; color: black;'></h4>", unsafe_allow_html=True)
+    bgcolor = "#fc6565"
+    fontcolor = "#000000"
+    html_temp = """<div style="background-color:{};padding:10px"> 
+                    <h4 style="color:{};text-align:center;">DISCLAIMER: Mind that, the longer the video, the longer the processing time.</h4> 
+                    </div>"""
+    st.markdown(html_temp.format(bgcolor,fontcolor),unsafe_allow_html=True)
+
+    app_video_upload()
+
+    st.write(" ")
+    st.write(" ")
+    bgcolor = "#ffffff"
+    fontcolor = "#ff0000"
+    html_line = """
+    <hr style="height:1px;border-width:0;color:{};background-color:{}">
+    """
+    st.markdown(html_line.format(bgcolor,fontcolor),unsafe_allow_html=True)
+
+    st.write("Contact us at maskguard21@gmail.com")
+    st.write("Go back to [maskguard.link](https://www.maskguard.link)")
+
+
+
 
 def app_video_upload():
     """ User video upload """
     legal_extensions = ["avi", "mp4"]
-    uploaded_file = st.file_uploader(f"Upload a video. Mind that, the longer the video, the longer the processing time.", ["avi", "mp4"]) 
+    uploaded_file = st.file_uploader(" ", ["avi", "mp4"]) 
     if uploaded_file:
         with st.spinner("Processing the video. It may take a few minutes."):
             prog = 0
@@ -165,7 +186,7 @@ class ModelAssembly():
         self.warn = MaskWarning(cooldown=6)
         self.optimizer = BrightnessOptimizer()
 
-        self.DIST_REF = 22
+        self.DIST_REF = 50
         self.FOCAL = int((309 *  100) / self.DIST_REF)
         self.dist = Distance(self.FOCAL, self.DIST_REF)
 
