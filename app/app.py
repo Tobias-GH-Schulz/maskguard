@@ -68,55 +68,72 @@ def main():
         layout="wide",
         initial_sidebar_state="collapsed",
             )
-
+    
     st.write("Go back to [maskguard.link](https://www.maskguard.link)")
 
-    st.markdown("<h1 style='text-align: center; color: black;'>Try maskguard with your camera!</h1>", unsafe_allow_html=True)
-    bgcolor = "#ffffff"
-    fontcolor = "#ff0000"
-    html_line = """
-    <hr style="height:1px;border-width:0;color:{};background-color:{}">
-    """
-    st.markdown(html_line.format(bgcolor,fontcolor),unsafe_allow_html=True)
+    mask_detection_page = (
+        "Real time demo"
+    )
+    video_upload_page = "Upload a video"
+    st.markdown("<h1 style='text-align: left; color: black;'>Available demo modes:</h1>", unsafe_allow_html=True)
+    app_mode = st.selectbox(
+        " ",
+        [
+            mask_detection_page,
+            video_upload_page,
+        ],
+    )
 
-    bgcolor = "#fc6565"
-    fontcolor = "#000000"
-    html_temp = """<div style="background-color:{};padding:10px"> 
-                    <h4 style="color:{};text-align:center;">DISCLAIMER: Click start to load the demo. (Loading will take a while!) Distance measurement may not be accurate due to lack of camera calibration. Audio warnings are off.</h4> 
-                    </div>"""
-    st.markdown(html_temp.format(bgcolor,fontcolor),unsafe_allow_html=True)
-    app_mask_detection()
+    if app_mode == mask_detection_page:
+        st.markdown("<h1 style='text-align: center; color: black;'>Try maskguard with your camera!</h1>", unsafe_allow_html=True)
+        bgcolor = "#ffffff"
+        fontcolor = "#ff0000"
+        html_line = """
+        <hr style="height:1px;border-width:0;color:{};background-color:{}">
+        """
+        st.markdown(html_line.format(bgcolor,fontcolor),unsafe_allow_html=True)
 
-    bgcolor = "#ffffff"
-    fontcolor = "#ff0000"
-    html_line = """
-    <hr style="height:1px;border-width:0;color:{};background-color:{}">
-    """
-    st.markdown(html_line.format(bgcolor,fontcolor),unsafe_allow_html=True)
+        bgcolor = "#fc6565"
+        fontcolor = "#000000"
+        html_temp = """<div style="background-color:{};padding:10px"> 
+                        <h4 style="color:{};text-align:center;">DISCLAIMER: Click start to load the demo. (Loading will take a while!) Distance measurement may not be accurate due to lack of camera calibration. Audio warnings are off.</h4> 
+                        </div>"""
+        st.markdown(html_temp.format(bgcolor,fontcolor),unsafe_allow_html=True)
+        app_mask_detection()
 
-    st.write(" ")
-    st.write(" ")
+        bgcolor = "#ffffff"
+        fontcolor = "#ff0000"
+        html_line = """
+        <hr style="height:1px;border-width:0;color:{};background-color:{}">
+        """
+        st.markdown(html_line.format(bgcolor,fontcolor),unsafe_allow_html=True)
 
-    st.markdown("<h1 style='text-align: center; color: black;'>Upload a video you would like to analyze!</h1>", unsafe_allow_html=True)
-    
-    st.markdown("<h4 style='text-align: center; color: black;'></h4>", unsafe_allow_html=True)
-    bgcolor = "#fc6565"
-    fontcolor = "#000000"
-    html_temp = """<div style="background-color:{};padding:10px"> 
-                    <h4 style="color:{};text-align:center;">DISCLAIMER: Mind that, the longer the video, the longer the processing time.</h4> 
-                    </div>"""
-    st.markdown(html_temp.format(bgcolor,fontcolor),unsafe_allow_html=True)
+        st.write(" ")
+        st.write(" ")
 
-    app_video_upload()
+    elif app_mode == video_upload_page:
+        st.markdown("<h1 style='text-align: center; color: black;'>Upload a video you would like to analyze!</h1>", unsafe_allow_html=True)
+        
+        st.markdown("<h4 style='text-align: center; color: black;'></h4>", unsafe_allow_html=True)
+        bgcolor = "#fc6565"
+        fontcolor = "#000000"
+        html_temp = """<div style="background-color:{};padding:10px"> 
+                        <h4 style="color:{};text-align:center;">DISCLAIMER: Mind that, the longer the video, the longer the processing time.</h4> 
+                        </div>"""
+        st.markdown(html_temp.format(bgcolor,fontcolor),unsafe_allow_html=True)
 
-    st.write(" ")
-    st.write(" ")
-    bgcolor = "#ffffff"
-    fontcolor = "#ff0000"
-    html_line = """
-    <hr style="height:1px;border-width:0;color:{};background-color:{}">
-    """
-    st.markdown(html_line.format(bgcolor,fontcolor),unsafe_allow_html=True)
+        app_video_upload()
+
+        st.write(" ")
+        st.write(" ")
+        bgcolor = "#ffffff"
+        fontcolor = "#ff0000"
+        html_line = """
+        <hr style="height:1px;border-width:0;color:{};background-color:{}">
+        """
+        st.markdown(html_line.format(bgcolor,fontcolor),unsafe_allow_html=True)
+
+        st.write(" ")
 
     st.write("Contact us at maskguard21@gmail.com")
     st.write("Go back to [maskguard.link](https://www.maskguard.link)")
