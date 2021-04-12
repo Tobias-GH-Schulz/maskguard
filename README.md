@@ -28,7 +28,7 @@ __Computer Vision:__ OpenCV, imutils
 
 __Web App:__ Streamlit, WebRTC 
 
-__Cloud:__ Google Cloud Platform
+__Cloud:__ AWS, Google Cloud Platform
 
 
 ---
