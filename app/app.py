@@ -39,7 +39,7 @@ FACE_PROTO = "src/models/face_model/deploy.prototxt"
 BODY_MODEL = "src/models/body_model/mobilenet.caffemodel"
 BODY_PROTO = "src/models/body_model/mobilenet.prototxt"
 MASK_MODEL = "src/models/mask_model/mnv2_mask_classifier_v3.pth"
-FACE_CONFID_THRESH = 0.5
+FACE_CONFID_THRESH = 0.7
 BODY_CONFID_THRESH = 0.5
 
 from streamlit_webrtc import (
@@ -95,8 +95,12 @@ def main():
 
         bgcolor = "#fc6565"
         fontcolor = "#000000"
-        html_temp = """<div style="background-color:{};padding:10px"> 
+        html_temp = """<div style="background-color:{};padding:2px"> 
                         <h4 style="color:{};text-align:center;">DISCLAIMER: Click start to load the demo. (Loading will take a while!) Distance measurement may not be accurate due to lack of camera calibration. Audio warnings are off.</h4> 
+                        </div>"""
+        st.markdown(html_temp.format(bgcolor,fontcolor),unsafe_allow_html=True)
+        html_temp = """<div style="background-color:{};padding:10px"> 
+                        <h5 style="color:{};text-align:center;">Tested with Google Chrome. Other browsers may cause issues.</h5> 
                         </div>"""
         st.markdown(html_temp.format(bgcolor,fontcolor),unsafe_allow_html=True)
         app_mask_detection()
