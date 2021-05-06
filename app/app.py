@@ -72,7 +72,7 @@ def main():
     st.write(" ")
     st.write(" ")
     st.markdown(
-            """<h2><a style='display: block; text-align: center; color: green' href="https://maskguard1.ew.r.appspot.com/">Upload a video or test it with your camera!</a></h2>
+            """<h2><a style='display: block; text-align: center; color: green' href="https://mask-deploy.ue.r.appspot.com/">Upload a video or test it with your camera!</a></h2>
     """,
     unsafe_allow_html=True,
     )
